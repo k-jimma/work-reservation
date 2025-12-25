@@ -1,3 +1,28 @@
-<h1>アカウント編集（骨組み）</h1>
+<h1>アカウント情報の編集</h1>
 
-<%# ここは後でDeviseの更新処理に接続します。 %>
+<%= form_with model: current_user, url: account_path, method: :put, local: true do |f| %>
+  <div>
+    <label>メールアドレス</label><br>
+    <%= f.email_field :email, required: true, value: current_user.email %>
+  </div>
+
+  <div style="margin-top:8px;">
+    <label>新しいパスワード（変更しない場合は空）</label><br>
+    <%= f.password_field :password, autocomplete: "new-password" %>
+  </div>
+
+  <div style="margin-top:8px;">
+    <label>新しいパスワード（確認）</label><br>
+    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+  </div>
+
+  <div style="margin-top:8px;">
+    <label>現在のパスワード（必須）</label><br>
+    <%= f.password_field :current_password, required: true, autocomplete: "current-password" %>
+  </div>
+
+  <div style="margin-top:12px;">
+    <%= f.submit "更新する" %>
+    <%= link_to "戻る", account_path %>
+  </div>
+<% end %>

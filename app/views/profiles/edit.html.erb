@@ -1,3 +1,30 @@
-<h1>プロフィール編集（骨組み）</h1>
+<h1>プロフィール編集</h1>
 
-<%# ここは後で名前/自己紹介/アイコンの編集フォームにします。 %>
+<%= form_with model: current_user, url: profile_path, method: :put, local: true, html: { multipart: true } do |f| %>
+  <div>
+    <label>名前</label><br>
+    <%= f.text_field :name, required: true %>
+    <% if current_user.errors[:name].present? %>
+      <div><%= current_user.errors[:name].join(', ') %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <label>自己紹介</label><br>
+    <%= f.text_area :bio, rows: 5 %>
+  </div>
+
+  <div>
+    <label>アイコン画像</label><br>
+    <%= f.file_field :icon, accept: "image/*" %>
+    <% if current_user.icon.attached? %>
+      <p>現在のアイコン：</p>
+      <%= image_tag current_user.icon.variant(resize_to_limit: [80,80]) rescue image_tag current_user.icon %>
+    <% end %>
+  </div>
+
+  <div style="margin-top:12px;">
+    <%= f.submit "更新する" %>
+    <%= link_to "戻る", mypage_path %>
+  </div>
+<% end %>
