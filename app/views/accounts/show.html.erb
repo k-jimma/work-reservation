@@ -1,0 +1,4 @@
+<h1>アカウント情報</h1>
+<p>メール: <%= current_user&.email || "（ログインしていません）" %></p>
+<p>パスワード: *********</p>
+<p><%= link_to "編集", edit_account_path %></p>
