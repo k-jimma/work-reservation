@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_25_081348) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_26_000736) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,6 +39,34 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_25_081348) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "reservations", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "room_id", null: false
+    t.date "check_in_on", null: false
+    t.date "check_out_on", null: false
+    t.integer "guests_count", null: false
+    t.datetime "confirmed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_reservations_on_created_at"
+    t.index ["room_id", "check_in_on", "check_out_on"], name: "index_reservations_on_room_id_and_check_in_on_and_check_out_on"
+    t.index ["room_id"], name: "index_reservations_on_room_id"
+    t.index ["user_id"], name: "index_reservations_on_user_id"
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "title", null: false
+    t.text "description", null: false
+    t.string "address", null: false
+    t.integer "price_per_night", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address"], name: "index_rooms_on_address"
+    t.index ["created_at"], name: "index_rooms_on_created_at"
+    t.index ["user_id"], name: "index_rooms_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -55,4 +83,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_25_081348) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "reservations", "rooms"
+  add_foreign_key "reservations", "users"
+  add_foreign_key "rooms", "users"
 end
