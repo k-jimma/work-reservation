@@ -1,2 +1,24 @@
-<h1>予約一覧（骨組み）</h1>
-<p>まだ予約がありません。施設を探して予約しましょう。</p>
+<h1>予約一覧</h1>
+
+<% if @reservations.any? %>
+  <% @reservations.each do |reservation| %>
+    <div style="border:1px solid #ddd; padding:12px; margin-bottom:12px;">
+      <h3><%= reservation.room.title %></h3>
+
+      <p>
+        チェックイン: <%= reservation.check_in_on %><br>
+        チェックアウト: <%= reservation.check_out_on %>
+      </p>
+
+      <p>
+        合計金額: ¥<%= reservation.total_amount %>
+      </p>
+
+      <p>
+        予約確定日時: <%= reservation.confirmed_at %>
+      </p>
+    </div>
+  <% end %>
+<% else %>
+  <p>予約はまだありません。</p>
+<% end %>

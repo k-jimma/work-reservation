@@ -1,2 +1,28 @@
-<h1>予約入力（骨組み）</h1>
-<p>チェックイン/アウト/人数は後で実装</p>
+<h1>予約する</h1>
+
+<h2><%= @room.title %></h2>
+
+<%= form_with model: [@room, @reservation], url: confirm_room_reservations_path(@room), data: { turbo: false }, local: true do |f| %>
+  <p>
+    <%= f.label :check_in_on, "チェックイン" %><br>
+    <%= f.date_field :check_in_on %>
+  </p>
+
+  <p>
+    <%= f.label :check_out_on, "チェックアウト" %><br>
+    <%= f.date_field :check_out_on %>
+  </p>
+
+  <p>
+    <%= f.label :guests_count, "人数" %><br>
+    <%= f.number_field :guests_count, min: 1 %>
+  </p>
+
+  <p>
+    <%= f.submit "確認へ進む" %>
+  </p>
+<% end %>
+
+<p>
+  <%= link_to "施設詳細に戻る", room_path(@room) %>
+</p>

@@ -1,12 +1,4 @@
 Rails.application.routes.draw do
-  get "reservations/index"
-  get "reservations/new"
-  get "reservations/edit"
-  get "rooms/index"
-  get "rooms/show"
-  get "rooms/new"
-  get "rooms/edit"
-  get "rooms/mine"
   get "profiles/edit"
   get "accounts/show"
   get "accounts/edit"
@@ -30,16 +22,17 @@ Rails.application.routes.draw do
   resource :profile, only: [:edit, :update]
 
   resources :rooms do
-    collection { get :mine }
+    collection do
+      get :mine
+    end
+
     resources :reservations, only: [:new, :create] do
-      collection { get :confirm }
+      collection do
+        post :confirm
+      end
     end
   end
 
   resources :reservations, only: [:index, :edit, :update, :destroy]
-  resources :rooms, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
-    collection do
-      get :mine
-    end
-  end
+
 end
