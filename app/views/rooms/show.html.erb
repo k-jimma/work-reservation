@@ -1,2 +1,20 @@
-<h1>施設詳細（骨組み）</h1>
-<p><%= link_to "戻る", request.referer.presence || root_path %></p>
+<h1><%= @room.title %></h1>
+
+<p>
+  <strong>住所:</strong><br>
+  <%= @room.address %>
+</p>
+
+<p>
+  <strong>説明:</strong><br>
+  <%= @room.description %>
+</p>
+
+<p>
+  <strong>料金:</strong><br>
+  ¥<%= @room.price_per_night %> / 泊
+</p>
+
+<p>
+  <%= link_to "一覧に戻る", rooms_path %>
+</p>

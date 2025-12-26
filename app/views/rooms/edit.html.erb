@@ -1,2 +1,31 @@
-<h1>Rooms#edit</h1>
-<p>Find me in app/views/rooms/edit.html.erb</p>
+<h1>施設を編集する</h1>
+
+<%= form_with model: @room, local: true do |f| %>
+  <p>
+    <%= f.label :title, "施設名" %><br>
+    <%= f.text_field :title %>
+  </p>
+
+  <p>
+    <%= f.label :address, "住所" %><br>
+    <%= f.text_field :address %>
+  </p>
+
+  <p>
+    <%= f.label :description, "説明" %><br>
+    <%= f.text_area :description %>
+  </p>
+
+  <p>
+    <%= f.label :price_per_night, "料金（1泊）" %><br>
+    <%= f.number_field :price_per_night %>
+  </p>
+
+  <p>
+    <%= f.submit "更新する" %>
+  </p>
+<% end %>
+
+<p>
+  <%= link_to "戻る", mine_rooms_path %>
+</p>

@@ -1,3 +1,30 @@
-<h1>自分の施設一覧（骨組み）</h1>
-<p><%= link_to "施設を登録", new_room_path %></p>
-<p>まだ施設がありません。まずは「施設を登録」から始めましょう。</p>
+<h1>自分の施設一覧</h1>
+
+<p>
+  <%= link_to "施設を登録する", new_room_path %>
+</p>
+
+<% if @rooms.any? %>
+  <ul>
+    <% @rooms.each do |room| %>
+      <li style="margin-bottom: 12px;">
+        <strong>
+          <%= link_to room.title, room_path(room) %>
+        </strong><br>
+
+        <span>住所: <%= room.address %></span><br>
+        <span>料金: ¥<%= room.price_per_night %> / 泊</span><br>
+
+        <%= link_to "編集", edit_room_path(room) %> |
+        <%= link_to "削除", room_path(room),
+              data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" } %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>まだ施設が登録されていません。</p>
+<% end %>
+
+<p>
+  <%= link_to "トップへ戻る", root_path %>
+</p>

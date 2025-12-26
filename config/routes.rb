@@ -37,5 +37,9 @@ Rails.application.routes.draw do
   end
 
   resources :reservations, only: [:index, :edit, :update, :destroy]
-
+  resources :rooms, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+    collection do
+      get :mine
+    end
+  end
 end

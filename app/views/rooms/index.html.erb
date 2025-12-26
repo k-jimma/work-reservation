@@ -1,3 +1,29 @@
-<h1>施設一覧（骨組み）</h1>
-<p>該当件数: 0 件</p>
-<p>検索フォームとカードは後で実装</p>
+<h1>施設一覧</h1>
+
+<%= form_with url: rooms_path, method: :get, local: true do %>
+  <div>
+    <label>エリア</label>
+    <%= text_field_tag :area, params[:area] %>
+  </div>
+
+  <div>
+    <label>キーワード</label>
+    <%= text_field_tag :q, params[:q] %>
+  </div>
+
+  <%= submit_tag "検索" %>
+<% end %>
+
+<hr>
+
+<% if @rooms.any? %>
+  <% @rooms.each do |room| %>
+    <div style="border:1px solid #ddd; padding:12px; margin-bottom:8px;">
+      <h3><%= link_to room.title, room_path(room) %></h3>
+      <p><%= room.address %></p>
+      <p>¥<%= room.price_per_night %> / 泊</p>
+    </div>
+  <% end %>
+<% else %>
+  <p>施設が見つかりませんでした。</p>
+<% end %>
