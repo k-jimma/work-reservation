@@ -25,6 +25,7 @@
       <p><%= yen(room.price_per_night) %> / 泊</p>
 
       <p><%= link_to "詳細を見る", room_path(room) %></p>
+      <%= link_to "予約する", new_room_reservation_path(room) %>
     </div>
   <% end %>
 <% else %>

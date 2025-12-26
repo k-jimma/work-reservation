@@ -20,6 +20,47 @@
       <p>
         予約確定日時: <%= reservation.confirmed_at.to_fs(:ymd_hm) %>
       </p>
+
+      <p>
+        <%= link_to "詳細を見る", reservation_path(reservation) %>
+      </p>
+
+      <div data-controller="confirm-modal" style="display:inline;">
+        <button type="button" data-action="confirm-modal#open">キャンセル</button>
+
+        <dialog data-confirm-modal-target="dialog" style="padding:16px; border:1px solid #ddd; border-radius:10px; max-width:560px; width:100%;">
+          <h3 style="margin:0 0 12px;">この予約をキャンセルしますか？</h3>
+
+          <div style="display:flex; gap:12px; align-items:flex-start;">
+            <div style="width:160px; flex:0 0 160px;">
+              <%= room_image_tag(reservation.room, style: "width:100%; height:auto; border-radius:8px; display:block;") %>
+            </div>
+
+            <div style="flex:1;">
+              <div style="font-weight:700;"><%= reservation.room.title %></div>
+              <div style="color:#666; margin-top:6px;"><%= yen(reservation.total_amount) %></div>
+
+              <div style="margin-top:10px; line-height:1.7;">
+                チェックイン: <%= reservation.check_in_on.to_fs(:ymd) %><br>
+                チェックアウト: <%= reservation.check_out_on.to_fs(:ymd) %><br>
+                人数: <%= reservation.guests_count %> 人
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:16px;">
+            <button type="button" data-action="confirm-modal#close">戻る</button>
+
+            <%= button_to "キャンセルする",
+                  reservation_path(reservation),
+                  method: :delete,
+                  form: { data: { turbo_confirm: nil } },
+                  data: { turbo: true },
+                  style: "background:#d9534f; color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer;" %>
+          </div>
+        </dialog>
+      </div>
+
     </div>
   <% end %>
 <% else %>

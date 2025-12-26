@@ -33,6 +33,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :reservations, only: [:index, :edit, :update, :destroy]
+  resources :reservations, only: [:index, :show, :destroy]
 
 end

@@ -38,10 +38,11 @@
     </header>
 
     <% if notice.present? %>
-      <div style="margin:12px; padding:10px; border-radius:6px; background:#e6fffb; color:#055160;"><%= notice %></div>
+      <div class="flash flash-notice" ><%= notice %></div>
     <% end %>
+
     <% if alert.present? %>
-      <div style="margin:12px; padding:10px; border-radius:6px; background:#fde2e2; color:#611a15;"><%= alert %></div>
+      <div class="flash flash-alert" ><%= alert %></div>
     <% end %>
 
     <main style="padding:16px;">

@@ -1,0 +1,32 @@
+<h1>予約詳細</h1>
+
+<h2><%= @reservation.room.title %></h2>
+
+<p>
+  チェックイン：
+  <%= @reservation.check_in_on.to_fs(:ymd) %><br>
+
+  チェックアウト：
+  <%= @reservation.check_out_on.to_fs(:ymd) %>
+</p>
+
+<p>
+  宿泊日数：<%= @reservation.nights %> 泊<br>
+  人数：<%= @reservation.guests_count %> 人
+</p>
+
+<p>
+  合計金額：<%= yen(@reservation.total_amount) %>
+</p>
+
+<p>
+  <%= link_to "施設の詳細を見る", room_path(@reservation.room) %>
+</p>
+
+<p>
+  <%= link_to "予約一覧に戻る", reservations_path %>
+</p>
+
+<%= button_to "予約をキャンセルする", reservation_path(@reservation), method: :delete, data: { turbo_confirm: "この予約をキャンセルしますか？" }, class: "btn btn-danger" %>
+
+
