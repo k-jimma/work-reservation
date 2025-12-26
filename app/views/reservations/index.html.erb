@@ -3,22 +3,33 @@
 <% if @reservations.any? %>
   <% @reservations.each do |reservation| %>
     <div style="border:1px solid #ddd; padding:12px; margin-bottom:12px;">
+
+      <%= room_image_tag(reservation.room, width: 180) %>
+
       <h3><%= reservation.room.title %></h3>
 
       <p>
-        チェックイン: <%= reservation.check_in_on %><br>
-        チェックアウト: <%= reservation.check_out_on %>
+        チェックイン: <%= reservation.check_in_on.to_fs(:ymd) %><br>
+        チェックアウト: <%= reservation.check_out_on.to_fs(:ymd) %>
       </p>
 
       <p>
-        合計金額: ¥<%= reservation.total_amount %>
+        合計金額: <%= yen(reservation.total_amount) %>
       </p>
 
       <p>
-        予約確定日時: <%= reservation.confirmed_at %>
+        予約確定日時: <%= reservation.confirmed_at.to_fs(:ymd_hm) %>
       </p>
     </div>
   <% end %>
 <% else %>
   <p>予約はまだありません。</p>
 <% end %>
+
+<p>
+  <%= link_to "マイページへ戻る", mypage_path %>
+</p>
+
+<p>
+  <%= link_to "施設一覧へ戻る", rooms_path %>
+</p>

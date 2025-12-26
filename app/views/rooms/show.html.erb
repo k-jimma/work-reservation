@@ -1,5 +1,7 @@
 <h1><%= @room.title %></h1>
 
+<%= room_image_tag(@room, width: 400) %>
+
 <p>
   <strong>住所:</strong><br>
   <%= @room.address %>
@@ -12,7 +14,7 @@
 
 <p>
   <strong>料金:</strong><br>
-  ¥<%= @room.price_per_night %> / 泊
+  <%= yen(@room.price_per_night) %> / 泊
 </p>
 
 <p>

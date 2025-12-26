@@ -8,12 +8,13 @@
   <ul>
     <% @rooms.each do |room| %>
       <li style="margin-bottom: 12px;">
+        <%= room_image_tag(room, width: 200) %>
         <strong>
           <%= link_to room.title, room_path(room) %>
         </strong><br>
 
         <span>住所: <%= room.address %></span><br>
-        <span>料金: ¥<%= room.price_per_night %> / 泊</span><br>
+        <span>料金: <%= yen(room.price_per_night) %> / 泊</span><br>
 
         <%= link_to "編集", edit_room_path(room) %> |
         <%= link_to "削除", room_path(room),

@@ -1,4 +1,7 @@
 <h1>マイページ</h1>
+
+<%= user_icon_tag(current_user, width: 100) %>
+
 <ul>
   <li><%= link_to "施設を探す", rooms_path %></li>
   <li><%= link_to "自分の施設", mine_rooms_path %></li>

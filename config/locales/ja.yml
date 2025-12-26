@@ -1,8 +1,2 @@
 ja:
-  time:
-    formats:
-      ymd: "%Y/%m/%d"
-      ymd_hm: "%Y/%m/%d %H:%M"
-  date:
-    formats:
-      ymd: "%Y/%m/%d"
+  hello: "こんにちは"

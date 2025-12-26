@@ -19,9 +19,12 @@
 <% if @rooms.any? %>
   <% @rooms.each do |room| %>
     <div style="border:1px solid #ddd; padding:12px; margin-bottom:8px;">
+      <%= room_image_tag(room, width: 240)  %>
       <h3><%= link_to room.title, room_path(room) %></h3>
       <p><%= room.address %></p>
-      <p>¥<%= room.price_per_night %> / 泊</p>
+      <p><%= yen(room.price_per_night) %> / 泊</p>
+
+      <p><%= link_to "詳細を見る", room_path(room) %></p>
     </div>
   <% end %>
 <% else %>

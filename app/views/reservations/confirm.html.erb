@@ -3,8 +3,8 @@
 <h2><%= @room.title %></h2>
 
 <p>
-  チェックイン: <%= @reservation.check_in_on %><br>
-  チェックアウト: <%= @reservation.check_out_on %>
+  チェックイン: <%= @reservation.check_in_on.to_fs(:ymd) %><br>
+  チェックアウト: <%= @reservation.check_out_on.to_fs(:ymd) %>
 </p>
 
 <p>
@@ -13,7 +13,7 @@
 </p>
 
 <p>
-  合計金額: ¥<%= @reservation.total_amount %>
+  合計金額: <%= yen(@reservation.total_amount) %>
 </p>
 
 <%= form_with model: [@room, @reservation], data: { turbo: false }, local: true do |f| %>

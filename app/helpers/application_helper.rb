@@ -11,7 +11,7 @@ module ApplicationHelper
   end
 
   def yen(amount)
-    return "-" if amount.nil?
-    number_to_currency(amount, unit: "¥", precision: 0)
+    return "-" if amount.blank?
+    "¥#{number_with_delimiter(amount)}"
   end
 end
