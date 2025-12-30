@@ -1,14 +1,17 @@
 class RoomsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy, :mine]
+
   def index
     @rooms = Room.order(created_at: :desc)
 
-    if params[:area].present?
-      @rooms = @rooms.where("address LIKE ?", "%#{params[:area]}%")
-    end
-
     if params[:q].present?
-      @rooms = @rooms.where("title LIKE :q OR description LIKE :q", q: "%#{params[:q]}%")
+      q = ActiveRecord::Base.sanitize_sql_like(params[:q].to_s.strip)
+      like = "%#{q}%"
+
+      @rooms = @rooms.where(
+        "title LIKE :q OR address LIKE :q OR description LIKE :q",
+        q: like
+      )
     end
   end
 
@@ -59,5 +62,4 @@ class RoomsController < ApplicationController
   def room_params
     params.require(:room).permit(:title, :description, :address, :price_per_night)
   end
-
 end

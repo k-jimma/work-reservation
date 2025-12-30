@@ -1,33 +1,62 @@
 <h1>施設一覧</h1>
 
-<%= form_with url: rooms_path, method: :get, local: true do %>
-  <div>
-    <label>エリア</label>
-    <%= text_field_tag :area, params[:area] %>
-  </div>
+<div style="margin: 12px 0 18px;">
+  <%= form_with url: rooms_path, method: :get, local: true do |f| %>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <%= f.search_field :q,
+            value: params[:q],
+            placeholder: "施設名・住所・説明文で検索（例: 駅近）",
+            style: "flex:1; padding:10px 12px; border:1px solid #ddd; border-radius:8px;" %>
 
-  <div>
-    <label>キーワード</label>
-    <%= text_field_tag :q, params[:q] %>
-  </div>
+      <%= f.submit "検索",
+            style: "padding:10px 14px; border:1px solid #111; background:#111; color:#fff; border-radius:8px; cursor:pointer;" %>
 
-  <%= submit_tag "検索" %>
-<% end %>
-
-<hr>
-
-<% if @rooms.any? %>
-  <% @rooms.each do |room| %>
-    <div style="border:1px solid #ddd; padding:12px; margin-bottom:8px;">
-      <%= room_image_tag(room, width: 240)  %>
-      <h3><%= link_to room.title, room_path(room) %></h3>
-      <p><%= room.address %></p>
-      <p><%= yen(room.price_per_night) %> / 泊</p>
-
-      <p><%= link_to "詳細を見る", room_path(room) %></p>
-      <%= link_to "予約する", new_room_reservation_path(room) %>
+      <% if params[:q].present? %>
+        <%= link_to "クリア", rooms_path,
+              style: "padding:10px 12px; border:1px solid #ddd; border-radius:8px;" %>
+      <% end %>
     </div>
   <% end %>
+
+  <% if params[:q].present? %>
+    <p style="margin:10px 0 0; color:#666;">
+      検索: <%= params[:q] %>
+    </p>
+  <% end %>
+</div>
+
+<% if @rooms.any? %>
+  <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:12px;">
+    <% @rooms.each do |room| %>
+      <div style="border:1px solid #ddd; border-radius:10px; overflow:hidden; background:#fff;">
+        <%= room_image_tag(room, style: "width:100%; height:160px; object-fit:cover; display:block;") %>
+
+        <div style="padding:12px;">
+          <div style="font-weight:700; font-size:16px; line-height:1.3;">
+            <%= link_to room.title, room_path(room) %>
+          </div>
+
+          <div style="margin-top:6px; color:#666; font-size:13px; line-height:1.5;">
+            <%= room.address %>
+          </div>
+
+          <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-weight:700;">
+              <%= yen(room.price_per_night) %> <span style="font-weight:400; color:#666;">/ 泊</span>
+            </div>
+
+            <%= link_to "詳細", room_path(room),
+                  style: "padding:8px 10px; border:1px solid #ddd; border-radius:8px;" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 <% else %>
-  <p>施設が見つかりませんでした。</p>
+  <div style="border:1px dashed #ccc; border-radius:10px; padding:16px; color:#666;">
+    <div style="font-weight:700; color:#111;">該当する施設が見つかりませんでした。</div>
+    <div style="margin-top:6px; line-height:1.7;">
+      キーワードを変えて試してみてください（例: 駅近 / 渋谷 / 駐車場 など）。
+    </div>
+  </div>
 <% end %>
