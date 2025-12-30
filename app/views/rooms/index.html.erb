@@ -2,28 +2,30 @@
 
 <div style="margin: 12px 0 18px;">
   <%= form_with url: rooms_path, method: :get, local: true do |f| %>
+    <%= hidden_field_tag :area, params[:area] %>
+
     <div style="display:flex; gap:8px; align-items:center;">
       <%= f.search_field :q,
             value: params[:q],
-            placeholder: "施設名・住所・説明文で検索（例: 駅近）",
+            placeholder: "施設名・説明で検索（例: 駅近） / エリア名もOK（東京など）",
             style: "flex:1; padding:10px 12px; border:1px solid #ddd; border-radius:8px;" %>
 
       <%= f.submit "検索",
             style: "padding:10px 14px; border:1px solid #111; background:#111; color:#fff; border-radius:8px; cursor:pointer;" %>
 
-      <% if params[:q].present? %>
+      <% if params[:q].present? || params[:area].present? %>
         <%= link_to "クリア", rooms_path,
               style: "padding:10px 12px; border:1px solid #ddd; border-radius:8px;" %>
       <% end %>
     </div>
   <% end %>
-
-  <% if params[:q].present? %>
-    <p style="margin:10px 0 0; color:#666;">
-      検索: <%= params[:q] %>
-    </p>
-  <% end %>
 </div>
+
+<p style="margin:10px 0 0; color:#666;">
+  合計: <%= @rooms_count %> 件
+  <% if params[:area].present? %> / エリア: <%= params[:area] %><% end %>
+  <% if params[:q].present? %> / 検索: <%= params[:q] %><% end %>
+</p>
 
 <% if @rooms.any? %>
   <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:12px;">
@@ -38,6 +40,10 @@
 
           <div style="margin-top:6px; color:#666; font-size:13px; line-height:1.5;">
             <%= room.address %>
+          </div>
+
+          <div style="margin-top:6px; color:#666; font-size:13px; line-height:1.6;">
+            <%= truncate(room.description, length: 80) %>
           </div>
 
           <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">

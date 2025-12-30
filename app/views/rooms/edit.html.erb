@@ -1,6 +1,6 @@
 <h1>施設を編集する</h1>
 
-<%= form_with model: @room, local: true do |f| %>
+<%= form_with model: @room, local: true, html: { multipart: true } do |f| %>
   <p>
     <%= f.label :title, "施設名" %><br>
     <%= f.text_field :title %>
@@ -19,6 +19,16 @@
   <p>
     <%= f.label :price_per_night, "料金（1泊）" %><br>
     <%= f.number_field :price_per_night %>
+  </p>
+
+  <p>
+    <%= f.label :image, "施設画像" %><br>
+    <%= f.file_field :image, accept: "image/*" %>
+
+    <% if @room.image.attached? %>
+      <p>現在の画像：</p>
+      <%= image_tag @room.image, style: "width:120px; height:auto;" %>
+    <% end %>
   </p>
 
   <p>

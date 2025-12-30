@@ -7,14 +7,26 @@
 <% if @rooms.any? %>
   <ul>
     <% @rooms.each do |room| %>
-      <li style="margin-bottom: 12px;">
-        <%= room_image_tag(room, width: 200) %>
-        <strong>
-          <%= link_to room.title, room_path(room) %>
-        </strong><br>
+      <li style="margin-bottom: 16px; border:1px solid #ddd; padding:12px; border-radius:10px;">
+        <%= room_image_tag(room, width: 200, style: "border-radius:8px;" ) %>
 
-        <span>住所: <%= room.address %></span><br>
-        <span>料金: <%= yen(room.price_per_night) %> / 泊</span><br>
+        <div style="margin-top:8px;">
+          <strong>
+            <%= link_to room.title, room_path(room) %>
+          </strong>
+        </div>
+
+        <div style="margin-top:6px; color:#666; font-size:13px; line-height:1.6;">
+          <%= truncate(room.description, length: 80) %>
+        </div>
+
+        <div style="margin-top:6px; font-weight:700;">
+          <%= yen(room.price_per_night) %> / 泊
+        </div>
+
+        <div style="margin-top:4px; color:#999; font-size:12px;">
+          作成日：<%= room.created_at.to_fs(:ymd_hm) %>
+        </div>
 
         <%= link_to "編集", edit_room_path(room) %> |
         <div data-controller="confirm-modal" style="display:inline;">

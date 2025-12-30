@@ -1,11 +1,121 @@
 <h1>マイページ</h1>
 
-<%= user_icon_tag(current_user, width: 100) %>
+<div style="display:flex; gap:14px; align-items:center; margin:12px 0 18px;">
+  <%= user_icon_tag(current_user, width: 100, height: 100, style: "border-radius:50%; object-fit:cover;" ) %>
 
-<ul>
-  <li><%= link_to "施設を探す", rooms_path %></li>
-  <li><%= link_to "自分の施設", mine_rooms_path %></li>
-  <li><%= link_to "予約一覧", reservations_path %></li>
-  <li><%= link_to "プロフィール編集", edit_profile_path %></li>
-  <li><%= link_to "アカウント情報", account_path %></li>
-</ul>
+  <div>
+    <div style="font-weight:700; font-size:16px;">
+      <%= current_user.try(:name).presence || current_user.email %>
+    </div>
+    <div style="color:#666; font-size:13px; margin-top:4px;">
+      StayApp の管理画面
+    </div>
+  </div>
+</div>
+
+<!-- KPI -->
+<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin:16px 0 22px;">
+  <div style="border:1px solid #ddd; border-radius:10px; padding:14px; background:#fff;">
+    <div style="color:#666; font-size:13px;">登録施設</div>
+    <div style="font-size:26px; font-weight:800; margin-top:6px;"><%= @rooms_count %></div>
+  </div>
+
+  <div style="border:1px solid #ddd; border-radius:10px; padding:14px; background:#fff;">
+    <div style="color:#666; font-size:13px;">予約（確定）</div>
+    <div style="font-size:26px; font-weight:800; margin-top:6px;"><%= @reservations_count %></div>
+  </div>
+</div>
+
+<!-- クイックアクション -->
+<h2 style="font-size:18px; margin:0 0 10px;">クイックアクション</h2>
+
+<div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:22px;">
+  <%= link_to "施設を探す", rooms_path, style: "padding:10px 12px; border:1px solid #ddd; border-radius:10px; background:#fff;" %>
+  <%= link_to "予約一覧", reservations_path, style: "padding:10px 12px; border:1px solid #ddd; border-radius:10px; background:#fff;" %>
+  <%= link_to "自分の施設", mine_rooms_path, style: "padding:10px 12px; border:1px solid #ddd; border-radius:10px; background:#fff;" %>
+  <%= link_to "施設を登録", new_room_path, style: "padding:10px 12px; border:1px solid #ddd; border-radius:10px; background:#fff;" %>
+  <%= link_to "プロフィール編集", edit_profile_path, style: "padding:10px 12px; border:1px solid #ddd; border-radius:10px; background:#fff;" %>
+  <%= link_to "アカウント情報", account_path, style: "padding:10px 12px; border:1px solid #ddd; border-radius:10px; background:#fff;" %>
+</div>
+
+<!-- 最近の施設 -->
+<div style="display:flex; align-items:center; justify-content:space-between; margin:0 0 10px;">
+  <h2 style="font-size:18px; margin:0;">最近の施設</h2>
+  <% if @has_more_rooms %>
+    <%= link_to "もっと見る", mine_rooms_path, style: "color:#666; font-size:13px; text-decoration:underline;" %>
+  <% end %>
+</div>
+
+<% if @recent_rooms.any? %>
+  <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:12px; margin-bottom:22px;">
+    <% @recent_rooms.each do |room| %>
+      <div style="border:1px solid #ddd; border-radius:10px; overflow:hidden; background:#fff;">
+        <%= room_image_tag(room, style: "width:100%; height:140px; object-fit:cover; display:block;") %>
+        <div style="padding:12px;">
+          <div style="font-weight:700; line-height:1.3;">
+            <%= link_to room.title, room_path(room) %>
+          </div>
+          <div style="margin-top:6px; color:#666; font-size:13px; line-height:1.5;">
+            <%= room.address %>
+          </div>
+          <div style="margin-top:10px; font-weight:700;">
+            <%= yen(room.price_per_night) %> <span style="font-weight:400; color:#666;">/ 泊</span>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div style="border:1px dashed #ccc; border-radius:10px; padding:16px; color:#666; margin-bottom:22px;">
+    <div style="font-weight:700; color:#111;">まだ施設がありません。</div>
+    <div style="margin-top:6px; line-height:1.7;">
+      まずは施設を登録してみましょう。
+    </div>
+    <div style="margin-top:10px;">
+      <%= link_to "施設を登録する", new_room_path, style: "display:inline-block; padding:10px 12px; border:1px solid #111; border-radius:10px; background:#111; color:#fff;" %>
+    </div>
+  </div>
+<% end %>
+
+<!-- 最近の予約 -->
+<div style="display:flex; align-items:center; justify-content:space-between; margin:0 0 10px;">
+  <h2 style="font-size:18px; margin:0;">最近の予約</h2>
+  <% if @has_more_reservations %>
+    <%= link_to "もっと見る", reservations_path, style: "color:#666; font-size:13px; text-decoration:underline;" %>
+  <% end %>
+</div>
+
+<% if @recent_reservations.any? %>
+  <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:12px;">
+    <% @recent_reservations.each do |reservation| %>
+      <div style="border:1px solid #ddd; border-radius:10px; overflow:hidden; background:#fff;">
+        <%= room_image_tag(reservation.room, style: "width:100%; height:140px; object-fit:cover; display:block;") %>
+        <div style="padding:12px;">
+          <div style="font-weight:700; line-height:1.3;">
+            <%= link_to reservation.room.title, reservation_path(reservation) %>
+          </div>
+
+          <div style="margin-top:6px; color:#666; font-size:13px; line-height:1.6;">
+            <div>チェックイン: <%= reservation.check_in_on.to_fs(:ymd) %></div>
+            <div>チェックアウト: <%= reservation.check_out_on.to_fs(:ymd) %></div>
+            <div>人数: <%= reservation.guests_count %> 人</div>
+          </div>
+
+          <div style="margin-top:10px; font-weight:700;">
+            <%= yen(reservation.total_amount) %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div style="border:1px dashed #ccc; border-radius:10px; padding:16px; color:#666;">
+    <div style="font-weight:700; color:#111;">まだ予約がありません。</div>
+    <div style="margin-top:6px; line-height:1.7;">
+      気になる施設を探して予約してみましょう。
+    </div>
+    <div style="margin-top:10px;">
+      <%= link_to "施設を探す", rooms_path, style: "display:inline-block; padding:10px 12px; border:1px solid #ddd; border-radius:10px; background:#fff;" %>
+    </div>
+  </div>
+<% end %>

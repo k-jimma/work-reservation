@@ -4,15 +4,42 @@ class RoomsController < ApplicationController
   def index
     @rooms = Room.order(created_at: :desc)
 
-    if params[:q].present?
-      q = ActiveRecord::Base.sanitize_sql_like(params[:q].to_s.strip)
-      like = "%#{q}%"
+    allowed_areas = %w[東京 大阪 京都 札幌]
 
-      @rooms = @rooms.where(
-        "title LIKE :q OR address LIKE :q OR description LIKE :q",
-        q: like
-      )
+    area = params[:area].to_s.strip
+    # q    = params[:q].to_s.strip
+    raw_q = params[:q].to_s.strip
+
+    normalized_q = raw_q.gsub(/　/, " ") # 全角スペースを半角に
+    tokens = normalized_q.split(/\s+/).reject(&:blank?)
+
+    if area.blank? && tokens.any?
+      hit = tokens.find { |t| allowed_areas.include?(t) }
+      if hit
+        area = hit
+        tokens = tokens - [hit] # 残りがフリーワード
+      end
     end
+
+    if area.present? && allowed_areas.include?(area)
+      like_area = "%#{ActiveRecord::Base.sanitize_sql_like(area)}%"
+      @rooms = @rooms.where("address LIKE ?", like_area)
+    end
+
+    # tokens が残ってたらそれぞれを title/description に OR で当てる
+    if tokens.any?
+      likes = tokens.map { |t| "%#{ActiveRecord::Base.sanitize_sql_like(t)}%" }
+
+      conditions = likes.map do
+        "(title LIKE ? OR description LIKE ?)"
+      end.join(" AND ")
+
+      binds = likes.flat_map { |lk| [lk, lk] }
+
+      @rooms = @rooms.where([conditions, *binds])
+    end
+
+    @rooms_count = @rooms.count
   end
 
   def show
@@ -60,6 +87,12 @@ class RoomsController < ApplicationController
   private
 
   def room_params
-    params.require(:room).permit(:title, :description, :address, :price_per_night)
+    params.require(:room).permit(
+      :title,
+      :description,
+      :address,
+      :price_per_night,
+      :image
+    )
   end
 end

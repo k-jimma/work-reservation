@@ -54,3 +54,8 @@ input, textarea, select, button {
   background: #fde2e2;
   color: #611a15;
 }
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
