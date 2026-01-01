@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  get "profiles/edit"
-  get "accounts/show"
-  get "accounts/edit"
-  get "mypages/show"
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

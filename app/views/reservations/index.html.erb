@@ -1,76 +1,95 @@
-<h1>予約一覧</h1>
+<h1 class="page-title">予約一覧</h1>
 
 <% if @reservations.any? %>
-  <% @reservations.each do |reservation| %>
-    <div style="border:1px solid #ddd; padding:12px; margin-bottom:12px;">
+  <div class="stack">
+    <% @reservations.each do |reservation| %>
+      <div class="card reservation-card">
+        <div class="card-body reservation-card__body">
+          <div class="reservation-card__media">
+            <%= room_image_tag(reservation.room, class: "img-thumb") %>
+          </div>
 
-      <%= room_image_tag(reservation.room, width: 180) %>
-
-      <h3><%= reservation.room.title %></h3>
-
-      <p>
-        チェックイン: <%= reservation.check_in_on.to_fs(:ymd) %><br>
-        チェックアウト: <%= reservation.check_out_on.to_fs(:ymd) %>
-      </p>
-
-      <p>
-        合計金額: <%= yen(reservation.total_amount) %>
-      </p>
-
-      <p>
-        予約確定日時: <%= reservation.confirmed_at.to_fs(:ymd_hm) %>
-      </p>
-
-      <p>
-        <%= link_to "詳細を見る", reservation_path(reservation) %>
-      </p>
-
-      <div data-controller="confirm-modal" style="display:inline;">
-        <button type="button" data-action="confirm-modal#open">キャンセル</button>
-
-        <dialog data-confirm-modal-target="dialog" style="padding:16px; border:1px solid #ddd; border-radius:10px; max-width:560px; width:100%;">
-          <h3 style="margin:0 0 12px;">この予約をキャンセルしますか？</h3>
-
-          <div style="display:flex; gap:12px; align-items:flex-start;">
-            <div style="width:160px; flex:0 0 160px;">
-              <%= room_image_tag(reservation.room, style: "width:100%; height:auto; border-radius:8px; display:block;") %>
+          <div class="reservation-card__content">
+            <div class="card-title">
+              <%= reservation.room.title %>
             </div>
 
-            <div style="flex:1;">
-              <div style="font-weight:700;"><%= reservation.room.title %></div>
-              <div style="color:#666; margin-top:6px;"><%= yen(reservation.total_amount) %></div>
+            <div class="card-desc">
+              <%= truncate(reservation.room.description, length: 100) %>
+            </div>
 
-              <div style="margin-top:10px; line-height:1.7;">
-                チェックイン: <%= reservation.check_in_on.to_fs(:ymd) %><br>
-                チェックアウト: <%= reservation.check_out_on.to_fs(:ymd) %><br>
-                人数: <%= reservation.guests_count %> 人
+            <div class="card-desc">
+              <div>チェックイン: <%= reservation.check_in_on.to_fs(:ymd) %></div>
+              <div>チェックアウト: <%= reservation.check_out_on.to_fs(:ymd) %></div>
+              <div>人数: <%= reservation.guests_count %> 人</div>
+            </div>
+
+            <div class="reservation-card__meta">
+              <div class="fw-bold">合計金額: <%= yen(reservation.total_amount) %></div>
+              <div class="text-muted text-small">予約確定: <%= reservation.confirmed_at.to_fs(:ymd_hm) %></div>
+            </div>
+
+            <div class="reservation-card__actions">
+              <%= link_to "詳細を見る", reservation_path(reservation), class: "btn btn-outline btn-sm" %>
+
+              <div data-controller="confirm-modal" class="confirm">
+                <button type="button" data-action="confirm-modal#open" class="btn btn-outline btn-sm">
+                  予約をキャンセルする
+                </button>
+
+                <dialog data-confirm-modal-target="dialog" class="modal">
+                  <h3 class="modal-title">この予約をキャンセルしますか？</h3>
+
+                  <div class="modal-body">
+                    <div class="modal-media">
+                      <%= room_image_tag(reservation.room, class: "img-thumb img-thumb--sm") %>
+                    </div>
+
+                    <div class="modal-content">
+                      <div class="fw-bold"><%= reservation.room.title %></div>
+                      <div class="text-muted text-small"><%= yen(reservation.total_amount) %></div>
+
+                      <div class="modal-meta">
+                        <div>チェックイン: <%= reservation.check_in_on.to_fs(:ymd) %></div>
+                        <div>チェックアウト: <%= reservation.check_out_on.to_fs(:ymd) %></div>
+                        <div>人数: <%= reservation.guests_count %> 人</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="modal-actions">
+                    <button type="button" data-action="confirm-modal#close" class="btn btn-sm">
+                      戻る
+                    </button>
+
+                    <%= button_to "キャンセルする",
+                          reservation_path(reservation),
+                          method: :delete,
+                          class: "btn btn-danger btn-sm",
+                          form: { data: { turbo_confirm: nil } },
+                          data: { turbo: true } %>
+                  </div>
+                </dialog>
               </div>
             </div>
           </div>
-
-          <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:16px;">
-            <button type="button" data-action="confirm-modal#close">戻る</button>
-
-            <%= button_to "キャンセルする",
-                  reservation_path(reservation),
-                  method: :delete,
-                  form: { data: { turbo_confirm: nil } },
-                  data: { turbo: true },
-                  style: "background:#d9534f; color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer;" %>
-          </div>
-        </dialog>
+        </div>
       </div>
-
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 <% else %>
-  <p>予約はまだありません。</p>
+  <div class="empty">
+    <div class="empty-title">予約はまだありません。</div>
+    <div class="empty-text">気になる施設を探して予約してみましょう。</div>
+    <div class="empty-actions">
+      <%= link_to "施設を探す", rooms_path, class: "btn" %>
+    </div>
+  </div>
 <% end %>
 
-<p>
-  <%= link_to "マイページへ戻る", mypage_path %>
-</p>
-
-<p>
-  <%= link_to "施設一覧へ戻る", rooms_path %>
-</p>
+<div class="section">
+  <div class="nav-actions">
+    <%= link_to "マイページへ戻る", mypage_path, class: "btn" %>
+    <%= link_to "施設一覧へ戻る", rooms_path, class: "btn" %>
+  </div>
+</div>

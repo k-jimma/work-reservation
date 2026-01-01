@@ -1,29 +1,49 @@
-<h1>予約内容の確認</h1>
+<h1 class="page-title">予約内容の確認</h1>
 
-<h2><%= @room.title %></h2>
+<div class="card">
+  <div class="card-body">
+    <div class="card-title"><%= @room.title %></div>
 
-<p>
-  チェックイン: <%= @reservation.check_in_on.to_fs(:ymd) %><br>
-  チェックアウト: <%= @reservation.check_out_on.to_fs(:ymd) %>
-</p>
+    <div class="detail-list mt-24">
+      <div class="detail-list__row">
+        <div class="detail-list__label">チェックイン</div>
+        <div class="detail-list__value"><%= @reservation.check_in_on.to_fs(:ymd) %></div>
+      </div>
 
-<p>
-  宿泊日数: <%= @reservation.nights %> 泊<br>
-  人数: <%= @reservation.guests_count %> 人
-</p>
+      <div class="detail-list__row">
+        <div class="detail-list__label">チェックアウト</div>
+        <div class="detail-list__value"><%= @reservation.check_out_on.to_fs(:ymd) %></div>
+      </div>
 
-<p>
-  合計金額: <%= yen(@reservation.total_amount) %>
-</p>
+      <div class="detail-list__row">
+        <div class="detail-list__label">宿泊日数</div>
+        <div class="detail-list__value"><%= @reservation.nights %> 泊</div>
+      </div>
 
-<%= form_with model: [@room, @reservation], data: { turbo: false }, local: true do |f| %>
-  <%= f.hidden_field :check_in_on %>
-  <%= f.hidden_field :check_out_on %>
-  <%= f.hidden_field :guests_count %>
+      <div class="detail-list__row">
+        <div class="detail-list__label">人数</div>
+        <div class="detail-list__value"><%= @reservation.guests_count %> 人</div>
+      </div>
 
-  <%= f.submit "予約を確定する" %>
-<% end %>
+      <div class="detail-list__row">
+        <div class="detail-list__label">合計金額</div>
+        <div class="detail-list__value fw-bold"><%= yen(@reservation.total_amount) %></div>
+      </div>
+    </div>
 
-<p>
-  <%= link_to "入力に戻る", new_room_reservation_path(@room) %>
-</p>
+    <%= form_with model: [@room, @reservation],
+          data: { turbo: false },
+          local: true,
+          class: "form reservation-confirm mt-24" do |f| %>
+
+      <%= f.hidden_field :check_in_on %>
+      <%= f.hidden_field :check_out_on %>
+      <%= f.hidden_field :guests_count %>
+
+      <div class="form-actions">
+        <%= f.submit "予約を確定する", class: "btn btn-primary" %>
+        <%= link_to "入力に戻る", new_room_reservation_path(@room), class: "btn" %>
+      </div>
+    <% end %>
+  </div>
+</div>

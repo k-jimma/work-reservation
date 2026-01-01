@@ -1,75 +1,94 @@
-<h1>自分の施設一覧</h1>
+<h1 class="page-title">
+  自分の施設一覧
+</h1>
 
-<p>
-  <%= link_to "施設を登録する", new_room_path %>
-</p>
+<div class="nav-actions">
+  <%= link_to "施設を登録する", new_room_path, class: "btn btn-primary" %>
+</div>
 
 <% if @rooms.any? %>
-  <ul>
-    <% @rooms.each do |room| %>
-      <li style="margin-bottom: 16px; border:1px solid #ddd; padding:12px; border-radius:10px;">
-        <%= room_image_tag(room, width: 200, style: "border-radius:8px;" ) %>
+  <div class="section rooms-mine">
+    <div class="grid grid-cards">
+      <% @rooms.each do |room| %>
+        <div class="card room-mine-card">
+          <%= room_image_tag(room, class: "room-mine-card__img") %>
 
-        <div style="margin-top:8px;">
-          <strong>
-            <%= link_to room.title, room_path(room) %>
-          </strong>
-        </div>
+          <div class="card-body">
+            <div class="card-title">
+              <%= link_to room.title, room_path(room) %>
+            </div>
 
-        <div style="margin-top:6px; color:#666; font-size:13px; line-height:1.6;">
-          <%= truncate(room.description, length: 80) %>
-        </div>
+            <div class="card-desc">
+              <%= truncate(room.description, length: 80) %>
+            </div>
 
-        <div style="margin-top:6px; font-weight:700;">
-          <%= yen(room.price_per_night) %> / 泊
-        </div>
-
-        <div style="margin-top:4px; color:#999; font-size:12px;">
-          作成日：<%= room.created_at.to_fs(:ymd_hm) %>
-        </div>
-
-        <%= link_to "編集", edit_room_path(room) %> |
-        <div data-controller="confirm-modal" style="display:inline;">
-          <button type="button" data-action="confirm-modal#open">削除</button>
-
-          <dialog data-confirm-modal-target="dialog" style="padding:16px; border:1px solid #ddd; border-radius:10px; max-width:520px; width:100%;">
-            <h3 style="margin:0 0 12px;">この施設を削除しますか？</h3>
-
-            <div style="display:flex; gap:12px; align-items:flex-start;">
-              <div style="width:160px; flex:0 0 160px;">
-                <%= room_image_tag(room, style: "width:100%; height:auto; border-radius:8px; display:block;") %>
+            <div class="room-mine-card__meta">
+              <div class="room-mine-card__price">
+                <%= yen(room.price_per_night) %>
+                <span class="room-mine-card__price-unit">/ 泊</span>
               </div>
 
-              <div style="flex:1;">
-                <div style="font-weight:700;"><%= room.title %></div>
-                <div style="color:#666; margin-top:6px;"><%= yen(room.price_per_night) %> / 泊</div>
+              <div class="text-small text-muted">
+                作成日：<%= room.created_at.to_fs(:ymd_hm) %>
               </div>
             </div>
 
-            <p style="margin-top:10px; color:#b45309; font-weight:700;">
-              注意：この施設に紐づく予約も一緒に削除されます。
-            </p>
+            <div class="room-mine-card__actions">
+              <%= link_to "編集", edit_room_path(room), class: "btn btn-outline btn-sm" %>
 
-            <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:16px;">
-              <button type="button" data-action="confirm-modal#close">キャンセル</button>
+              <div data-controller="confirm-modal" class="confirm">
+                <button type="button" data-action="confirm-modal#open" class="btn btn-sm btn-danger">
+                  削除
+                </button>
 
-              <%= button_to "削除する",
-                    room_path(room),
-                    method: :delete,
-                    form: { data: { turbo_confirm: nil } },
-                    data: { turbo: true },
-                    style: "background:#d9534f; color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer;" %>
+                <dialog data-confirm-modal-target="dialog" class="modal">
+                  <h3 class="modal-title">この施設を削除しますか？</h3>
+
+                  <div class="modal-body">
+                    <div class="modal-media">
+                      <%= room_image_tag(room, class: "img-thumb img-thumb--sm") %>
+                    </div>
+
+                    <div>
+                      <div class="fw-bold"><%= room.title %></div>
+                      <div class="text-muted text-small mt-24" style="margin-top:6px;">
+                        <%= yen(room.price_per_night) %> / 泊
+                      </div>
+                    </div>
+                  </div>
+
+                  <p class="room-mine-card__danger">
+                    注意：この施設に紐づく予約も一緒に削除されます。
+                  </p>
+
+                  <div class="modal-actions">
+                    <button type="button" data-action="confirm-modal#close" class="btn">
+                      キャンセル
+                    </button>
+
+                    <%= button_to "削除する",
+                          room_path(room),
+                          method: :delete,
+                          form: { data: { turbo_confirm: nil } },
+                          data: { turbo: true },
+                          class: "btn btn-danger" %>
+                  </div>
+                </dialog>
+              </div>
             </div>
-          </dialog>
-        </div>
 
-      </li>
-    <% end %>
-  </ul>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
 <% else %>
-  <p>まだ施設が登録されていません。</p>
+  <div class="empty">
+    <div class="empty-title">まだ施設が登録されていません。</div>
+    <div class="empty-text">右上の「施設を登録する」から追加できます。</div>
+  </div>
 <% end %>
 
-<p>
-  <%= link_to "トップへ戻る", root_path %>
-</p>
+<div class="mt-24">
+  <%= link_to "トップへ戻る", root_path, class: "btn" %>
+</div>

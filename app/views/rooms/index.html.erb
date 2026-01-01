@@ -1,67 +1,76 @@
-<h1>施設一覧</h1>
+<h1 class="page-title">施設一覧</h1>
 
-<div style="margin: 12px 0 18px;">
-  <%= form_with url: rooms_path, method: :get, local: true do |f| %>
+<div class="rooms-index__search">
+  <%= form_with url: rooms_path, method: :get, local: true, class: "form" do |f| %>
     <%= hidden_field_tag :area, params[:area] %>
 
-    <div style="display:flex; gap:8px; align-items:center;">
+    <div class="searchbar">
       <%= f.search_field :q,
             value: params[:q],
             placeholder: "施設名・説明で検索（例: 駅近） / エリア名もOK（東京など）",
-            style: "flex:1; padding:10px 12px; border:1px solid #ddd; border-radius:8px;" %>
+            class: "input" %>
 
-      <%= f.submit "検索",
-            style: "padding:10px 14px; border:1px solid #111; background:#111; color:#fff; border-radius:8px; cursor:pointer;" %>
+      <%= f.submit "検索", class: "btn btn-primary" %>
 
       <% if params[:q].present? || params[:area].present? %>
-        <%= link_to "クリア", rooms_path,
-              style: "padding:10px 12px; border:1px solid #ddd; border-radius:8px;" %>
+        <%= link_to "クリア", rooms_path, class: "btn" %>
       <% end %>
     </div>
   <% end %>
 </div>
 
-<p style="margin:10px 0 0; color:#666;">
+<p class="rooms-index__meta text-muted">
   合計: <%= @rooms_count %> 件
   <% if params[:area].present? %> / エリア: <%= params[:area] %><% end %>
   <% if params[:q].present? %> / 検索: <%= params[:q] %><% end %>
 </p>
 
 <% if @rooms.any? %>
-  <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:12px;">
+  <div class="grid grid-cards">
     <% @rooms.each do |room| %>
-      <div style="border:1px solid #ddd; border-radius:10px; overflow:hidden; background:#fff;">
-        <%= room_image_tag(room, style: "width:100%; height:160px; object-fit:cover; display:block;") %>
+      <div class="card room-card">
+        <%= room_image_tag(room, class: "room-card__img") %>
 
-        <div style="padding:12px;">
-          <div style="font-weight:700; font-size:16px; line-height:1.3;">
+        <div class="card-body">
+          <div class="card-title">
             <%= link_to room.title, room_path(room) %>
           </div>
 
-          <div style="margin-top:6px; color:#666; font-size:13px; line-height:1.5;">
-            <%= room.address %>
-          </div>
+          <div class="card-sub"><%= room.address %></div>
 
-          <div style="margin-top:6px; color:#666; font-size:13px; line-height:1.6;">
+          <div class="card-desc">
             <%= truncate(room.description, length: 80) %>
           </div>
 
-          <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
-            <div style="font-weight:700;">
-              <%= yen(room.price_per_night) %> <span style="font-weight:400; color:#666;">/ 泊</span>
+          <div class="card-row room-card__actions">
+            <div class="room-card__price">
+              <%= yen(room.price_per_night) %>
+              <span class="room-card__price-unit">/ 泊</span>
             </div>
 
-            <%= link_to "詳細", room_path(room),
-                  style: "padding:8px 10px; border:1px solid #ddd; border-radius:8px;" %>
+            <div class="room-card__buttons">
+              <%= link_to "詳細", room_path(room), class: "btn btn-outline btn-sm" %>
+
+              <% if user_signed_in? %>
+                <%= link_to "予約する",
+                      new_room_reservation_path(room),
+                      class: "btn btn-primary btn-sm" %>
+              <% else %>
+                <%= link_to "予約する",
+                      new_user_session_path,
+                      class: "btn btn-primary btn-sm" %>
+              <% end %>
+            </div>
           </div>
+
         </div>
       </div>
     <% end %>
   </div>
 <% else %>
-  <div style="border:1px dashed #ccc; border-radius:10px; padding:16px; color:#666;">
-    <div style="font-weight:700; color:#111;">該当する施設が見つかりませんでした。</div>
-    <div style="margin-top:6px; line-height:1.7;">
+  <div class="empty">
+    <div class="empty-title">該当する施設が見つかりませんでした。</div>
+    <div class="empty-text">
       キーワードを変えて試してみてください（例: 駅近 / 渋谷 / 駐車場 など）。
     </div>
   </div>

@@ -1,26 +1,42 @@
-<h1><%= @room.title %></h1>
+<h1 class="page-title">
+  <%= @room.title %>
+</h1>
 
-<%= room_image_tag(@room, width: 400) %>
+<div class="room-show">
+  <div class="reservation-detail__body">
+    <div class="reservation-detail__media">
+      <%= room_image_tag(@room, class: "img-thumb img-thumb--lg room-show__img") %>
+    </div>
 
-<p>
-  <strong>住所:</strong><br>
-  <%= @room.address %>
-</p>
+    <div class="reservation-detail__content">
+      <div class="detail-list">
+        <div class="detail-list__row">
+          <div class="detail-list__label">住所</div>
+          <div class="detail-list__value"><%= @room.address %></div>
+        </div>
 
-<p>
-  <strong>説明:</strong><br>
-  <%= @room.description %>
-</p>
+        <div class="detail-list__row">
+          <div class="detail-list__label">説明</div>
+          <div class="detail-list__value room-show__desc"><%= @room.description %></div>
+        </div>
 
-<p>
-  <strong>料金:</strong><br>
-  <%= yen(@room.price_per_night) %> / 泊
-</p>
+        <div class="detail-list__row">
+          <div class="detail-list__label">料金</div>
+          <div class="detail-list__value">
+            <span class="room-show__price"><%= yen(@room.price_per_night) %></span>
+            <span class="text-muted">/ 泊</span>
+          </div>
+        </div>
+      </div>
 
-<p>
-  <%= link_to "この施設を予約する", new_room_reservation_path(@room) %>
-</p>
+      <div class="room-show__actions">
+        <%= link_to "この施設を予約する",
+              new_room_reservation_path(@room),
+              class: "btn btn-primary" %>
 
-<p>
-  <%= link_to "一覧に戻る", rooms_path %>
-</p>
+        <%= link_to "一覧へ戻る", rooms_path, class: "btn btn-outline" %>
+
+      </div>
+    </div>
+  </div>
+</div>

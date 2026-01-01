@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Reservation" %></title>
+    <title><%= content_for(:title) || "StayApp" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="turbo-cache-control" content="no-cache">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -18,70 +19,51 @@
   </head>
 
   <body>
-    <header style="padding:12px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center;">
-      <%= link_to "StayApp", root_path %>
-      <nav style="display:flex; gap:12px;">
+    <header class="site-header">
+      <%= link_to "StayApp", root_path, class: "site-brand" %>
+
+      <nav class="site-nav">
         <% if user_signed_in? %>
-          <details style="position:relative;">
-            <summary style="
-              list-style:none;
-              cursor:pointer;
-              display:flex;
-              align-items:center;
-              gap:8px;
-            ">
-              <%= user_icon_tag(current_user,
-                    width: 32,
-                    height: 32,
-                    style: "border-radius:50%; object-fit:cover;" ) %>
-              <span><%= current_user.name %></span>
+          <details class="user-menu">
+            <summary class="user-menu__summary">
+              <%= user_icon_tag(current_user, width: 32, height: 32, class: "user-menu__avatar") %>
+              <span class="user-menu__name"><%= current_user.name %></span>
             </summary>
 
-            <div style="
-              position:absolute;
-              right:0;
-              top:100%;
-              background:#fff;
-              border:1px solid #ddd;
-              border-radius:8px;
-              padding:8px;
-              min-width:180px;
-              z-index:100;
-            ">
-              <div><%= link_to "マイページ", mypage_path %></div>
-              <div><%= link_to "自分の施設", mine_rooms_path %></div>
-              <div><%= link_to "予約一覧", reservations_path %></div>
-              <div><%= link_to "プロフィール編集", edit_profile_path %></div>
-              <div><%= link_to "アカウント情報", account_path %></div>
-              <hr>
-              <div>
-                <%= link_to "ログアウト",
-                      destroy_user_session_path,
-                      data: { turbo_method: :delete } %>
+            <div class="user-menu__panel">
+              <div class="user-menu__item"><%= link_to "マイページ", mypage_path %></div>
+              <div class="user-menu__item"><%= link_to "自分の施設", mine_rooms_path %></div>
+              <div class="user-menu__item"><%= link_to "予約一覧", reservations_path %></div>
+              <div class="user-menu__item"><%= link_to "プロフィール編集", edit_profile_path %></div>
+              <div class="user-menu__item"><%= link_to "アカウント情報", account_path %></div>
+
+              <div class="user-menu__divider"></div>
+
+              <div class="user-menu__item">
+                <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete } %>
               </div>
             </div>
           </details>
-
         <% else %>
-          <%= link_to "ログイン", new_user_session_path %>
-          <%= link_to "新規登録", new_user_registration_path %>
+          <%= link_to "ログイン", new_user_session_path, class: "btn" %>
+          <%= link_to "新規登録", new_user_registration_path, class: "btn btn-primary" %>
         <% end %>
       </nav>
     </header>
 
     <% if notice.present? %>
-      <div class="flash flash-notice" ><%= notice %></div>
+      <div class="flash flash-notice"><%= notice %></div>
     <% end %>
 
     <% if alert.present? %>
-      <div class="flash flash-alert" ><%= alert %></div>
+      <div class="flash flash-alert"><%= alert %></div>
     <% end %>
 
-    <main style="padding:16px;">
+    <main class="site-main">
       <%= yield %>
     </main>
 
-    <footer style="padding:12px; border-top:1px solid #eee; display:flex; justify-content:space-between; color:#666;">
+    <footer class="site-footer">
       <div>StayApp</div>
       <div>© <%= Time.current.year %> StayApp</div>
     </footer>

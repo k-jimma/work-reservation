@@ -1,140 +1,75 @@
-<div style="position:relative; margin:-16px -16px 24px;">
+<div class="hero">
+  <div class="hero__bg">
+    <div class="hero__panel">
+      <h1 class="hero__title">泊まりたい場所、すぐ見つかる</h1>
+      <p class="hero__lead">施設名・住所・特徴から、あなたに合った宿泊先を検索できます</p>
 
-  <!-- ヒーロー画像 -->
-  <div style="
-    height:420px;
-    background-image:url('<%= asset_path('top.jpg') %>');
-    background-size:cover;
-    background-position:center;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  ">
-    <div style="
-      background:rgba(0,0,0,0.55);
-      padding:28px 32px;
-      border-radius:14px;
-      max-width:720px;
-      width:90%;
-      color:#fff;
-    ">
-      <h1 style="margin:0 0 12px; font-size:28px;">
-        泊まりたい場所、すぐ見つかる
-      </h1>
-
-      <p style="margin:0 0 18px; font-size:15px; line-height:1.6;">
-        施設名・住所・特徴から、あなたに合った宿泊先を検索できます
-      </p>
-
-      <!-- 検索フォーム -->
-      <%= form_with url: rooms_path, method: :get, local: true do |f| %>
-        <div style="display:flex; gap:10px;">
+      <%= form_with url: rooms_path, method: :get, local: true, class: "search" do |f| %>
+        <div class="search__row">
           <%= f.search_field :q,
+                value: params[:q],
                 placeholder: "例: 駅近 / 渋谷 / 駐車場あり",
-                style: "flex:1; padding:14px 16px; border-radius:10px; border:none;" %>
+                class: "input input--lg" %>
 
-          <%= f.submit "検索",
-                style: "padding:14px 20px; border:none; border-radius:10px; background:#fff; color:#111; font-weight:700; cursor:pointer;" %>
+          <%= f.submit "検索", class: "btn btn--lg" %>
         </div>
       <% end %>
     </div>
   </div>
 </div>
 
-<!-- 補足エリア -->
-<div style="max-width:960px; margin:0 auto; padding:0 16px;">
-  <h2 style="font-size:20px; margin-bottom:8px;">
-    StayAppでできること
-  </h2>
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">StayAppでできること</h2>
 
-  <ul style="line-height:1.8; color:#555;">
-    <li>施設名・住所・特徴をまとめて検索</li>
-    <li>気になる施設をそのまま予約</li>
-    <li>自分の施設登録・管理も可能</li>
-  </ul>
+    <div class="stack">
+      <div class="text-muted">施設名・住所・特徴をまとめて検索</div>
+      <div class="text-muted">気になる施設をそのまま予約</div>
+      <div class="text-muted">自分の施設登録・管理も可能</div>
+    </div>
 
-  <div style="margin-top:16px;">
-    <%= link_to "施設一覧を見る", rooms_path,
-          style: "display:inline-block; padding:10px 14px; border:1px solid #ddd; border-radius:8px;" %>
+    <div class="mt-24">
+      <%= link_to "施設一覧を見る", rooms_path, class: "btn btn-outline" %>
+    </div>
   </div>
-</div>
+</section>
 
-<!-- おすすめエリア -->
-<div style="max-width:960px; margin:24px auto 0; padding:0 16px;">
-  <h2 style="font-size:20px; margin-bottom:10px;">
-    おすすめエリア
-  </h2>
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">おすすめエリア</h2>
 
-  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px;">
-
-    <!-- 東京 -->
-    <%= link_to rooms_path(q: "東京"),
-          style: "display:block; border-radius:12px; overflow:hidden; background:#fff; border:1px solid #ddd;" do %>
-      <div style="
-        height:140px;
-        background-image:url('<%= asset_path('tokyo.jpg') %>');
-        background-size:cover;
-        background-position:center;
-      "></div>
-      <div style="padding:10px 12px;">
-        <div style="font-weight:800; font-size:16px;">東京</div>
-        <div style="color:#666; font-size:13px; margin-top:4px;">
-          都心・観光・出張に
+    <div class="grid grid-area">
+      <%= link_to rooms_path(area: "東京"), class: "area-card" do %>
+        <div class="area-card__img area-card__img_tokyo"></div>
+        <div class="area-card__body">
+          <div class="area-card__title">東京</div>
+          <div class="area-card__sub">都心・観光・出張に</div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
 
-    <!-- 大阪 -->
-    <%= link_to rooms_path(q: "大阪"),
-          style: "display:block; border-radius:12px; overflow:hidden; background:#fff; border:1px solid #ddd;" do %>
-      <div style="
-        height:140px;
-        background-image:url('<%= asset_path('osaka.jpg') %>');
-        background-size:cover;
-        background-position:center;
-      "></div>
-      <div style="padding:10px 12px;">
-        <div style="font-weight:800; font-size:16px;">大阪</div>
-        <div style="color:#666; font-size:13px; margin-top:4px;">
-          グルメ・観光に
+      <%= link_to rooms_path(area: "大阪"), class: "area-card" do %>
+        <div class="area-card__img area-card__img_osaka"></div>
+        <div class="area-card__body">
+          <div class="area-card__title">大阪</div>
+          <div class="area-card__sub">グルメ・観光に</div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
 
-    <!-- 京都 -->
-    <%= link_to rooms_path(q: "京都"),
-          style: "display:block; border-radius:12px; overflow:hidden; background:#fff; border:1px solid #ddd;" do %>
-      <div style="
-        height:140px;
-        background-image:url('<%= asset_path('kyoto.jpg') %>');
-        background-size:cover;
-        background-position:center;
-      "></div>
-      <div style="padding:10px 12px;">
-        <div style="font-weight:800; font-size:16px;">京都</div>
-        <div style="color:#666; font-size:13px; margin-top:4px;">
-          歴史と街歩き
+      <%= link_to rooms_path(area: "京都"), class: "area-card" do %>
+        <div class="area-card__img area-card__img_kyoto"></div>
+        <div class="area-card__body">
+          <div class="area-card__title">京都</div>
+          <div class="area-card__sub">歴史と街歩き</div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
 
-    <!-- 札幌 -->
-    <%= link_to rooms_path(q: "札幌"),
-          style: "display:block; border-radius:12px; overflow:hidden; background:#fff; border:1px solid #ddd;" do %>
-      <div style="
-        height:140px;
-        background-image:url('<%= asset_path('sapporo.jpg') %>');
-        background-size:cover;
-        background-position:center;
-      "></div>
-      <div style="padding:10px 12px;">
-        <div style="font-weight:800; font-size:16px;">札幌</div>
-        <div style="color:#666; font-size:13px; margin-top:4px;">
-          自然とグルメ
+      <%= link_to rooms_path(area: "札幌"), class: "area-card" do %>
+        <div class="area-card__img area-card__img_sapporo"></div>
+        <div class="area-card__body">
+          <div class="area-card__title">札幌</div>
+          <div class="area-card__sub">自然とグルメ</div>
         </div>
-      </div>
-    <% end %>
-
+      <% end %>
+    </div>
   </div>
-</div>
-
+</section>

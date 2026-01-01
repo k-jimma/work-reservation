@@ -4,7 +4,10 @@ module ApplicationHelper
 
   def room_image_tag(room = nil, **opts)
     if room&.image&.attached?
-      image_tag(room.image, { alt: "room", loading: "lazy" }.merge(opts))
+      image_tag(
+        url_for(room.image),
+        { alt: "room", loading: "lazy" }.merge(opts)
+      )
     else
       image_tag(ROOM_FALLBACK_URL, { alt: "room", loading: "lazy" }.merge(opts))
     end
@@ -14,7 +17,10 @@ module ApplicationHelper
     user ||= current_user if respond_to?(:current_user)
 
     if user&.icon&.attached?
-      image_tag(user.icon, { alt: "user", loading: "lazy" }.merge(opts))
+      image_tag(
+        url_for(user.icon),
+        { alt: "user", loading: "lazy" }.merge(opts)
+      )
     else
       image_tag(USER_FALLBACK_URL, { alt: "user", loading: "lazy" }.merge(opts))
     end
