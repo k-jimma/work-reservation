@@ -1,24 +1,82 @@
-# README
+# Reservation App
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+宿泊施設の検索・予約・管理ができるシンプルな予約アプリケーションです。
+ユーザー視点の UI/UX と、実運用を意識したバリデーション・権限制御を重視して設計しています。
 
-Things you may want to cover:
+---
 
-* Ruby version
+## 概要
 
-* System dependencies
+このアプリでは以下のことができます。
 
-* Configuration
+- 宿泊施設の検索（エリア / キーワード）
+- 宿泊施設の一覧・詳細表示
+- 宿泊予約の作成・確認・キャンセル
+- ユーザーアカウント管理（Devise）
+- 施設画像のアップロード（ActiveStorage）
 
-* Database creation
+---
 
-* Database initialization
+## 使用技術
 
-* How to run the test suite
+- Ruby 3.4.7
+- Ruby on Rails 7.2.2.1
+- SQLite3（開発環境）
+- Devise（認証）
+- ActiveStorage（画像管理）
+- image_processing（画像リサイズ）
+- Turbo / Stimulus
+- i18n（日本語エラーメッセージ）
 
-* Services (job queues, cache servers, search engines, etc.)
+---
 
-* Deployment instructions
+## 機能一覧
 
-* ...
+### 検索
+
+- エリア指定検索
+- キーワード検索（施設名 / 住所 / 特徴）
+- 該当件数0件時の空状態表示
+
+### 施設管理
+
+- 施設登録 / 編集 / 削除
+- バリデーション
+  - 料金の数値・正数チェック
+  - 必須項目チェック
+- 施設画像アップロード
+
+### 予約
+
+- チェックイン / チェックアウト日指定
+- 宿泊人数指定
+- 確認画面付き予約フロー
+- 日付・人数のバリデーション
+- nil 安全な表示処理
+
+### アカウント管理
+
+- ユーザー登録 / ログイン
+- メールアドレス・パスワード変更
+- 日本語エラーメッセージ表示
+
+---
+
+## バリデーションとエラーメッセージ
+
+- 各入力項目ごとにエラーメッセージを表示
+- エラーメッセージは `config/locales/ja.yml` に集約
+- 英語の属性名（email, description 等）が表示されないよう対応
+
+---
+
+## Seed データについて
+- ユーザー
+- 宿泊施設
+- 施設画像（ActiveStorage）
+を作成します。
+※ 画像は db/seed_images を使用しています。
+
+### Seed Users
+- owner@example.com / password
+- guest@example.com / password
