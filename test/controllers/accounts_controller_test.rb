@@ -1,13 +1,17 @@
 require "test_helper"
 
 class AccountsControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    sign_in users(:owner)
+  end
+
   test "should get show" do
-    get accounts_show_url
+    get account_url
     assert_response :success
   end
 
   test "should get edit" do
-    get accounts_edit_url
+    get edit_account_url
     assert_response :success
   end
 end

@@ -1,28 +1,34 @@
 require "test_helper"
 
 class RoomsControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    sign_in users(:owner)
+  end
+
   test "should get index" do
-    get rooms_index_url
+    get rooms_url
     assert_response :success
   end
 
   test "should get show" do
-    get rooms_show_url
+    room = rooms(:one)
+    get room_url(room)
     assert_response :success
   end
 
   test "should get new" do
-    get rooms_new_url
+    get new_room_url
     assert_response :success
   end
 
   test "should get edit" do
-    get rooms_edit_url
+    room = rooms(:one)
+    get edit_room_url(room)
     assert_response :success
   end
 
   test "should get mine" do
-    get rooms_mine_url
+    get mine_rooms_url
     assert_response :success
   end
 end

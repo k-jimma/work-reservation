@@ -1,18 +1,23 @@
 require "test_helper"
 
 class ReservationsControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    @reservation = reservations(:one)
+    sign_in users(:guest)
+  end
+
   test "should get index" do
-    get reservations_index_url
+    get reservations_url
     assert_response :success
   end
 
   test "should get new" do
-    get reservations_new_url
+    get new_room_reservation_url(rooms(:one))
     assert_response :success
   end
 
-  test "should get edit" do
-    get reservations_edit_url
+  test "should get show" do
+    get reservation_url(@reservation)
     assert_response :success
   end
 end

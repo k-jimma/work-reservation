@@ -1,15 +1,13 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  user: one
-  title: MyString
-  description: MyText
-  address: MyString
-  price_per_night: 1
+  user: owner
+  title: 東京の空が見える部屋
+  address: 東京都渋谷区1-1-1
+  description: 空が見える。静か。
+  price_per_night: 12000
 
 two:
-  user: two
-  title: MyString
-  description: MyText
-  address: MyString
-  price_per_night: 1
+  user: owner
+  title: 駅近の東京ルーム
+  address: 東京都新宿区2-2-2
+  description: 駅近で便利。
+  price_per_night: 9000
