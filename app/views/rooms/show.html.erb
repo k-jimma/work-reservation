@@ -34,7 +34,9 @@
               new_room_reservation_path(@room),
               class: "btn btn-primary" %>
 
-        <%= link_to "一覧へ戻る", rooms_path, class: "btn btn-outline" %>
+        <%= link_to "戻る",
+              (request.referer.presence || rooms_path),
+              class: "btn btn-outline" %>
 
       </div>
     </div>

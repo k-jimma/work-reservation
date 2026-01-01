@@ -13,16 +13,19 @@
       <div class="form-row">
         <%= f.label :check_in_on, "チェックイン", class: "label" %>
         <%= f.date_field :check_in_on, class: "input" %>
+        <%= render "shared/field_error", object: @reservation, field: :check_in_on %>
       </div>
 
       <div class="form-row">
         <%= f.label :check_out_on, "チェックアウト", class: "label" %>
         <%= f.date_field :check_out_on, class: "input" %>
+        <%= render "shared/field_error", object: @reservation, field: :check_out_on %>
       </div>
 
       <div class="form-row">
         <%= f.label :guests_count, "人数", class: "label" %>
         <%= f.number_field :guests_count, min: 1, class: "input" %>
+        <%= render "shared/field_error", object: @reservation, field: :guests_count %>
       </div>
 
       <div class="form-actions">

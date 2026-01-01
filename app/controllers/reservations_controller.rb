@@ -19,7 +19,7 @@ class ReservationsController < ApplicationController
       redirect_to reservations_path, notice: "予約を確定しました。"
     else
       flash.now[:alert] = "予約の確定に失敗しました。"
-      render :confirm, status: :unprocessable_entity
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -29,9 +29,12 @@ class ReservationsController < ApplicationController
 
   def confirm
     @room = Room.find(params[:room_id])
-    @reservation = Reservation.new(reservation_params)
-    @reservation.user = current_user
-    @reservation.room = @room
+    @reservation = @room.reservations.new(reservation_params)
+
+    if @reservation.invalid?
+      render :new, status: :unprocessable_entity
+      return
+    end
   end
 
   def destroy

@@ -7,12 +7,12 @@
     <div class="detail-list mt-24">
       <div class="detail-list__row">
         <div class="detail-list__label">チェックイン</div>
-        <div class="detail-list__value"><%= @reservation.check_in_on.to_fs(:ymd) %></div>
+        <div class="detail-list__value"><%= @reservation.check_in_on&.to_fs(:ymd) %></div>
       </div>
 
       <div class="detail-list__row">
         <div class="detail-list__label">チェックアウト</div>
-        <div class="detail-list__value"><%= @reservation.check_out_on.to_fs(:ymd) %></div>
+        <div class="detail-list__value"><%= @reservation.check_out_on&.to_fs(:ymd) %></div>
       </div>
 
       <div class="detail-list__row">

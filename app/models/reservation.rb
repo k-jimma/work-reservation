@@ -3,8 +3,10 @@ class Reservation < ApplicationRecord
   belongs_to :user
   belongs_to :room
 
-  validates :check_in_on, :check_out_on, :guests_count, presence: true
-  validates :guests_count, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
+  validates :check_in_on, presence: true
+  validates :check_out_on, presence: true
+  validates :guests_count, presence: true
+  validates :guests_count, numericality: { only_integer: true, greater_than_or_equal_to: 1 }, allow_blank: true
   validate  :check_in_cannot_be_in_the_past
   validate  :check_out_after_check_in
 

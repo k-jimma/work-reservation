@@ -7,21 +7,25 @@
   <div class="form-row">
     <%= f.label :title, "施設名", class: "label" %>
     <%= f.text_field :title, class: "input", required: true %>
+    <%= render "shared/field_error", object: @room, field: :title %>
   </div>
 
   <div class="form-row">
     <%= f.label :address, "住所", class: "label" %>
     <%= f.text_field :address, class: "input", required: true %>
+    <%= render "shared/field_error", object: @room, field: :address %>
   </div>
 
   <div class="form-row">
     <%= f.label :description, "説明", class: "label" %>
     <%= f.text_area :description, class: "textarea" %>
+    <%= render "shared/field_error", object: @room, field: :description %>
   </div>
 
   <div class="form-row">
     <%= f.label :price_per_night, "料金（1泊）", class: "label" %>
     <%= f.number_field :price_per_night, class: "input", min: 0, step: 1, required: true %>
+    <%= render "shared/field_error", object: @room, field: :price_per_night %>
   </div>
 
   <div class="form-row">
