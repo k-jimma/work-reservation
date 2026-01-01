@@ -1,5 +1,5 @@
 class ReservationsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :show, :confirm]
+  before_action :authenticate_user!, only: [ :new, :create, :show, :confirm ]
   def index
     @reservations = current_user.reservations.includes(:room).order(created_at: :desc)
   end
@@ -33,7 +33,6 @@ class ReservationsController < ApplicationController
 
     if @reservation.invalid?
       render :new, status: :unprocessable_entity
-      return
     end
   end
 
@@ -48,5 +47,4 @@ class ReservationsController < ApplicationController
   def reservation_params
     params.require(:reservation).permit(:check_in_on, :check_out_on, :guests_count)
   end
-
 end

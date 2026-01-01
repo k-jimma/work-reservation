@@ -1,5 +1,5 @@
 class RoomsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy, :mine]
+  before_action :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy, :mine ]
 
   def index
     @rooms = Room.order(created_at: :desc)
@@ -17,7 +17,7 @@ class RoomsController < ApplicationController
       hit = tokens.find { |t| allowed_areas.include?(t) }
       if hit
         area = hit
-        tokens = tokens - [hit] # 残りがフリーワード
+        tokens = tokens - [ hit ] # 残りがフリーワード
       end
     end
 
@@ -34,9 +34,9 @@ class RoomsController < ApplicationController
         "(title LIKE ? OR description LIKE ?)"
       end.join(" AND ")
 
-      binds = likes.flat_map { |lk| [lk, lk] }
+      binds = likes.flat_map { |lk| [ lk, lk ] }
 
-      @rooms = @rooms.where([conditions, *binds])
+      @rooms = @rooms.where([ conditions, *binds ])
     end
 
     @rooms_count = @rooms.count

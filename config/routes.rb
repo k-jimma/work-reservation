@@ -13,22 +13,21 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
 
-  resource :account, only: [:show, :edit, :update]
-  resource :mypage, only: [:show]
-  resource :profile, only: [:edit, :update]
+  resource :account, only: [ :show, :edit, :update ]
+  resource :mypage, only: [ :show ]
+  resource :profile, only: [ :edit, :update ]
 
   resources :rooms do
     collection do
       get :mine
     end
 
-    resources :reservations, only: [:new, :create] do
+    resources :reservations, only: [ :new, :create ] do
       collection do
         post :confirm
       end
     end
   end
 
-  resources :reservations, only: [:index, :show, :destroy]
-
+  resources :reservations, only: [ :index, :show, :destroy ]
 end

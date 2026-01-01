@@ -6,6 +6,6 @@ class HardenReservationNullsAndIndexes < ActiveRecord::Migration[7.2]
     change_column_null :reservations, :check_out_on, false
     change_column_null :reservations, :guests_count, false
     add_index :reservations, :created_at
-    add_index :reservations, [:room_id, :check_in_on, :check_out_on]
+    add_index :reservations, [ :room_id, :check_in_on, :check_out_on ]
   end
 end
