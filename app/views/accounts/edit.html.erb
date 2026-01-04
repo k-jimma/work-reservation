@@ -1,0 +1,53 @@
+<h1 class="page-title">アカウント情報の編集</h1>
+
+<%= form_with model: current_user,
+      url: account_path,
+      method: :put,
+      local: true,
+      html: { class: "form form--card" } do |f| %>
+
+  <div class="form-row">
+    <%= f.label :email, "メールアドレス", class: "label" %>
+    <%= f.email_field :email,
+          required: true,
+          value: current_user.email,
+          class: "input" %>
+    <%= render "shared/field_error", object: current_user, field: :email %>
+  </div>
+
+  <div class="form-row">
+    <%= f.label :password, "新しいパスワード", class: "label" %>
+    <%= f.password_field :password,
+          autocomplete: "new-password",
+          class: "input" %>
+    <%= render "shared/field_error", object: current_user, field: :password %>
+    <div class="form-help">
+      変更しない場合は空のままにしてください
+    </div>
+  </div>
+
+  <div class="form-row">
+    <%= f.label :password_confirmation, "新しいパスワード（確認）", class: "label" %>
+    <%= f.password_field :password_confirmation,
+          autocomplete: "new-password",
+          class: "input" %>
+    <%= render "shared/field_error", object: current_user, field: :password_confirmation %>
+  </div>
+
+  <div class="form-row">
+    <%= f.label :current_password, "現在のパスワード", class: "label" %>
+    <%= f.password_field :current_password,
+          required: true,
+          autocomplete: "current-password",
+          class: "input" %>
+    <%= render "shared/field_error", object: current_user, field: :current_password %>
+    <div class="form-help">
+      セキュリティのため必須です
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit "更新する", class: "btn btn-primary" %>
+    <%= link_to "戻る", account_path, class: "btn" %>
+  </div>
+<% end %>

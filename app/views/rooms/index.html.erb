@@ -1,0 +1,77 @@
+<h1 class="page-title">施設一覧</h1>
+
+<div class="rooms-index__search">
+  <%= form_with url: rooms_path, method: :get, local: true, class: "form" do |f| %>
+    <%= hidden_field_tag :area, params[:area] %>
+
+    <div class="searchbar">
+      <%= f.search_field :q,
+            value: params[:q],
+            placeholder: "施設名・説明で検索（例: 駅近） / エリア名もOK（東京など）",
+            class: "input" %>
+
+      <%= f.submit "検索", class: "btn btn-primary" %>
+
+      <% if params[:q].present? || params[:area].present? %>
+        <%= link_to "クリア", rooms_path, class: "btn" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<p class="rooms-index__meta text-muted">
+  合計: <%= @rooms_count %> 件
+  <% if params[:area].present? %> / エリア: <%= params[:area] %><% end %>
+  <% if params[:q].present? %> / 検索: <%= params[:q] %><% end %>
+</p>
+
+<% if @rooms.any? %>
+  <div class="grid grid-cards">
+    <% @rooms.each do |room| %>
+      <div class="card room-card">
+        <%= room_image_tag(room, class: "room-card__img") %>
+
+        <div class="card-body">
+          <div class="card-title">
+            <%= link_to room.title, room_path(room) %>
+          </div>
+
+          <div class="card-sub"><%= room.address %></div>
+
+          <div class="card-desc">
+            <%= truncate(room.description, length: 80) %>
+          </div>
+
+          <div class="card-row room-card__actions">
+            <div class="room-card__price">
+              <%= yen(room.price_per_night) %>
+              <span class="room-card__price-unit">/ 泊</span>
+            </div>
+
+            <div class="room-card__buttons">
+              <%= link_to "詳細", room_path(room), class: "btn btn-outline btn-sm" %>
+
+              <% if user_signed_in? %>
+                <%= link_to "予約する",
+                      new_room_reservation_path(room),
+                      class: "btn btn-primary btn-sm" %>
+              <% else %>
+                <%= link_to "予約する",
+                      new_user_session_path,
+                      class: "btn btn-primary btn-sm" %>
+              <% end %>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="empty">
+    <div class="empty-title">該当する施設が見つかりませんでした。</div>
+    <div class="empty-text">
+      キーワードを変えて試してみてください（例: 駅近 / 渋谷 / 駐車場 など）。
+    </div>
+  </div>
+<% end %>

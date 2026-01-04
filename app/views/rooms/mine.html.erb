@@ -1,0 +1,94 @@
+<h1 class="page-title">
+  自分の施設一覧
+</h1>
+
+<div class="nav-actions">
+  <%= link_to "施設を登録する", new_room_path, class: "btn btn-primary" %>
+</div>
+
+<% if @rooms.any? %>
+  <div class="section rooms-mine">
+    <div class="grid grid-cards">
+      <% @rooms.each do |room| %>
+        <div class="card room-mine-card">
+          <%= room_image_tag(room, class: "room-mine-card__img") %>
+
+          <div class="card-body">
+            <div class="card-title">
+              <%= link_to room.title, room_path(room) %>
+            </div>
+
+            <div class="card-desc">
+              <%= truncate(room.description, length: 80) %>
+            </div>
+
+            <div class="room-mine-card__meta">
+              <div class="room-mine-card__price">
+                <%= yen(room.price_per_night) %>
+                <span class="room-mine-card__price-unit">/ 泊</span>
+              </div>
+
+              <div class="text-small text-muted">
+                作成日：<%= room.created_at.to_fs(:ymd) %>
+              </div>
+            </div>
+
+            <div class="room-mine-card__actions">
+              <%= link_to "編集", edit_room_path(room), class: "btn btn-outline btn-sm" %>
+
+              <div data-controller="confirm-modal" class="confirm">
+                <button type="button" data-action="confirm-modal#open" class="btn btn-sm btn-danger">
+                  削除
+                </button>
+
+                <dialog data-confirm-modal-target="dialog" class="modal">
+                  <h3 class="modal-title">この施設を削除しますか？</h3>
+
+                  <div class="modal-body">
+                    <div class="modal-media">
+                      <%= room_image_tag(room, class: "img-thumb img-thumb--sm") %>
+                    </div>
+
+                    <div>
+                      <div class="fw-bold"><%= room.title %></div>
+                      <div class="text-muted text-small mt-24" style="margin-top:6px;">
+                        <%= yen(room.price_per_night) %> / 泊
+                      </div>
+                    </div>
+                  </div>
+
+                  <p class="room-mine-card__danger">
+                    注意：この施設に紐づく予約も一緒に削除されます。
+                  </p>
+
+                  <div class="modal-actions">
+                    <button type="button" data-action="confirm-modal#close" class="btn">
+                      キャンセル
+                    </button>
+
+                    <%= button_to "削除する",
+                          room_path(room),
+                          method: :delete,
+                          form: { data: { turbo_confirm: nil } },
+                          data: { turbo: true },
+                          class: "btn btn-danger" %>
+                  </div>
+                </dialog>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% else %>
+  <div class="empty">
+    <div class="empty-title">まだ施設が登録されていません。</div>
+    <div class="empty-text">右上の「施設を登録する」から追加できます。</div>
+  </div>
+<% end %>
+
+<div class="mt-24">
+  <%= link_to "トップへ戻る", root_path, class: "btn" %>
+</div>

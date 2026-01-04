@@ -1,0 +1,984 @@
+/*
+ *= require_tree .
+ *= require_self
+*/
+
+/* =========================
+  Tokens
+========================= */
+:root {
+  --container: 960px;
+
+  --text: #111;
+  --muted: #666;
+
+  --border: #ddd;
+  --border-soft: #eee;
+
+  --bg: #fff;
+
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 6px 18px rgba(0,0,0,0.10);
+
+  --primary: #111;
+  --danger: #d9534f;
+
+  --flash-notice-bg: #e6fffb;
+  --flash-notice-text: #055160;
+  --flash-alert-bg: #fde2e2;
+  --flash-alert-text: #611a15;
+}
+
+/* =========================
+  Base / Reset
+========================= */
+* { box-sizing: border-box; }
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans JP", sans-serif;
+  margin: 0;
+  color: var(--text);
+  background: var(--bg);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover { text-decoration: underline; }
+
+input, textarea, select, button { font: inherit; }
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* =========================
+  Layout
+========================= */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.site-header {
+  padding: 12px;
+  border-bottom: 1px solid var(--border-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.site-brand {
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.site-nav {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.site-main {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.site-footer {
+  padding: 12px;
+  border-top: 1px solid var(--border-soft);
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  background: var(--bg);
+}
+
+/* =========================
+  Utilities
+========================= */
+.mt-24 { margin-top: 24px; }
+
+.text-muted { color: var(--muted); }
+.text-small { font-size: 13px; }
+
+.fw-bold { font-weight: 700; }
+
+/* =========================
+  Typography
+========================= */
+.page-title {
+  margin: 0 0 14px;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.section-title {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.stack {
+  display: grid;
+  gap: 8px;
+}
+
+/* =========================
+  Section
+========================= */
+.section { margin: 16px 0 22px; }
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 10px;
+}
+
+.section-actions a {
+  color: var(--muted);
+  font-size: 13px;
+  text-decoration: underline;
+}
+
+/* =========================
+  Grid
+========================= */
+.grid {
+  display: grid;
+  gap: 12px;
+}
+
+.grid-cards {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.grid-area {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+/* =========================
+  Card
+========================= */
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.card-body { padding: 12px; }
+
+.card-title {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+.card-sub {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.card-desc {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.card-row {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+/* =========================
+  Media
+========================= */
+.img-cover-md {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  border: 1px solid var(--border);
+  background: #fff;
+}
+
+.area-card__img_tokyo {
+  background-image:url('<%= asset_path("tokyo.jpg") %>');
+}
+
+.area-card__img_osaka {
+  background-image:url('<%= asset_path("osaka.jpg") %>');
+}
+
+.area-card__img_kyoto {
+  background-image:url('<%= asset_path("kyoto.jpg") %>');
+}
+
+.area-card__img_sapporo {
+  background-image:url('<%= asset_path("sapporo.jpg") %>');
+}
+
+/* =========================
+  Button
+========================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: #fff;
+  color: var(--text);
+  cursor: pointer;
+  line-height: 1;
+  text-decoration: none;
+  user-select: none;
+  transition: transform 0.02s ease, background 0.12s ease, border-color 0.12s ease;
+}
+
+.btn:hover {
+  text-decoration: none;
+  border-color: #cfcfcf;
+}
+
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+  font-weight: 800;
+}
+
+.btn-primary:hover { border-color: #000; }
+
+.btn-outline { border-color: var(--text); }
+
+.btn-danger {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+  font-weight: 800;
+}
+
+/* home hero用のサイズバリエーション */
+.btn--lg {
+  padding: 14px 20px;
+  border-radius: var(--radius-lg);
+}
+
+/* =========================
+  Form
+========================= */
+.form {
+  margin: 0;
+}
+
+.form--card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  background: var(--bg);
+}
+
+.form-row {
+  margin: 12px 0;
+}
+
+.label {
+  display: block;
+  margin: 0 0 6px;
+  font-weight: 700;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.input--file {
+  padding: 8px 10px;
+}
+
+.form-help {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.field-error {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: #fde2e2;
+  color: var(--flash-alert-text);
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.form-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+
+/* =========================
+  Flash
+========================= */
+.flash {
+  margin: 12px auto;
+  max-width: var(--container);
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: 800;
+}
+
+.flash-notice {
+  background: var(--flash-notice-bg);
+  color: var(--flash-notice-text);
+}
+
+.flash-alert {
+  background: var(--flash-alert-bg);
+  color: var(--flash-alert-text);
+}
+
+/* =========================
+  User menu
+========================= */
+.user-menu { position: relative; }
+
+.user-menu__summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-menu__summary::-webkit-details-marker { display: none; }
+
+.user-menu__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  background: #fff;
+}
+
+.user-menu__name { font-weight: 700; }
+
+.user-menu__panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  min-width: 180px;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+
+.user-menu__item a {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+
+.user-menu__item a:hover {
+  text-decoration: none;
+  background: #f7f7f7;
+}
+
+.user-menu__divider {
+  height: 1px;
+  background: var(--border-soft);
+  margin: 6px 0;
+}
+
+/* =========================
+  Home (Hero)
+========================= */
+.hero { margin: -16px -16px 24px; }
+
+.hero__bg {
+  height: 420px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image:url('<%= asset_path("top.jpg") %>');
+}
+
+.hero__panel {
+  background: rgba(0,0,0,0.55);
+  padding: 28px 32px;
+  border-radius: var(--radius-xl);
+  max-width: 720px;
+  width: 90%;
+  color: #fff;
+  box-shadow: var(--shadow-md);
+}
+
+.hero__title {
+  margin: 0 0 12px;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.hero__lead {
+  margin: 0 0 18px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #f0f0f0;
+}
+
+.search { margin: 0; }
+
+.search__row {
+  display: flex;
+  gap: 10px;
+}
+
+.input {
+  width: 100%;
+  flex: 1;
+}
+
+.input--lg {
+  padding: 14px 16px;
+  font-size: 15px;
+  border-radius: var(--radius-lg);
+  border: none;
+}
+
+/* =========================
+  Area card
+========================= */
+.area-card {
+  display: block;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.08s ease, box-shadow 0.12s ease;
+}
+
+.area-card:hover {
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.area-card__img {
+  height: 120px;
+  background-size: cover;
+  background-position: center;
+}
+
+.area-card__body { padding: 10px 12px; }
+
+.area-card__title { font-weight: 800; }
+
+.area-card__sub {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* =========================
+  MyPage
+========================= */
+.profile {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin: 12px 0 18px;
+}
+
+.profile__name {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* =========================
+  KPI
+========================= */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 16px 0 22px;
+}
+
+.kpi-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  background: #fff;
+}
+
+.kpi-label {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.kpi-value {
+  font-size: 26px;
+  font-weight: 800;
+  margin-top: 6px;
+}
+
+/* =========================
+  Empty state
+========================= */
+.empty {
+  border: 1px dashed #ccc;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  color: var(--muted);
+  background: #fff;
+}
+
+.empty-title {
+  font-weight: 800;
+  color: var(--text);
+}
+
+.empty-text {
+  margin-top: 6px;
+  line-height: 1.7;
+}
+
+.empty-actions { margin-top: 10px; }
+
+/* =========================
+  Profile
+========================= */
+.icon-preview {
+  margin-top: 8px;
+}
+
+.icon-preview__img {
+  width: 80px;
+  height: 80px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  background: #fff;
+  display: block;
+}
+
+/* =========================
+  Button (size)
+========================= */
+.btn-sm {
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+}
+
+/* =========================
+  Reservations
+========================= */
+.reservation-card__body {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.reservation-card__media {
+  flex: 0 0 auto;
+}
+
+.reservation-card__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.reservation-card__meta {
+  margin-top: 10px;
+  display: grid;
+  gap: 4px;
+}
+
+.reservation-card__actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.img-thumb {
+  width: 180px;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: #fff;
+}
+
+.img-thumb--sm {
+  width: 160px;
+  height: 110px;
+}
+
+/* confirm-modal wrapper */
+.confirm {
+  display: inline;
+}
+
+/* =========================
+  Modal (dialog)
+========================= */
+.modal {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  max-width: 560px;
+  width: 100%;
+  background: #fff;
+}
+
+.modal::backdrop {
+  background: rgba(0,0,0,0.35);
+}
+
+.modal-title {
+  margin: 0 0 12px;
+  font-weight: 800;
+}
+
+.modal-body {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.modal-media {
+  flex: 0 0 auto;
+}
+
+.modal-meta {
+  margin-top: 10px;
+  line-height: 1.7;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+/* =========================
+  Page nav actions
+========================= */
+.nav-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* =========================
+  Reservations (detail)
+========================= */
+.reservation-detail__body {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.reservation-detail__media {
+  flex: 0 0 auto;
+}
+
+.reservation-detail__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.reservation-detail__title {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.reservation-detail__actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* img-thumb size for detail page */
+.img-thumb--lg {
+  width: 400px;
+  height: 260px;
+}
+
+/* =========================
+  Detail list
+========================= */
+.detail-list {
+  display: grid;
+  gap: 10px;
+}
+
+.detail-list__row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 10px;
+  align-items: baseline;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.detail-list__row:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.detail-list__label {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.detail-list__value {
+  line-height: 1.6;
+}
+
+/* =========================
+  Responsive
+========================= */
+@media (max-width: 720px) {
+  .reservation-detail__body {
+    flex-direction: column;
+  }
+
+  .img-thumb--lg {
+    width: 100%;
+    height: 220px;
+  }
+
+  .detail-list__row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+/* =========================
+  Reservations (form)
+========================= */
+.reservation-form {
+  margin-top: 12px;
+}
+
+
+/* =========================
+  Searchbar
+========================= */
+.searchbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.rooms-index__search {
+  margin: 12px 0 18px;
+}
+
+.rooms-index__meta {
+  margin: 10px 0 0;
+}
+
+/* =========================
+  Room card
+========================= */
+.room-card__img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.room-card__price {
+  font-weight: 800;
+}
+
+.room-card__price-unit {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* =========================
+  Responsive
+========================= */
+@media (max-width: 720px) {
+  .searchbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .searchbar .btn {
+    width: 100%;
+  }
+}
+
+/* =========================
+  Room card actions
+========================= */
+.room-card__actions {
+  align-items: center;
+}
+
+.room-card__buttons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* =========================
+  Room form
+========================= */
+.room-form__help {
+  margin-top: 10px;
+}
+
+.room-form__preview {
+  margin-top: 8px;
+}
+
+.room-form__preview-img {
+  width: 160px;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: #fff;
+}
+
+/* =========================
+  Rooms (mine)
+========================= */
+.room-mine-card__img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.room-mine-card__meta {
+  margin-top: 10px;
+  display: grid;
+  gap: 4px;
+}
+
+.room-mine-card__price {
+  font-weight: 800;
+}
+
+.room-mine-card__price-unit {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.room-mine-card__actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.room-mine-card__danger {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: #fff7ed;
+  color: #b45309;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* =========================
+  Rooms (show)
+========================= */
+.room-show__price {
+  font-weight: 800;
+}
+
+.room-show__actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.room-show__desc {
+  white-space: pre-wrap;
+}

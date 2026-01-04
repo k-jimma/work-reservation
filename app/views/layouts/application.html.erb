@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Reservation" %></title>
+    <title><%= content_for(:title) || "StayApp" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="turbo-cache-control" content="no-cache">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -14,9 +15,57 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <%= yield %>
+    <header class="site-header">
+      <%= link_to "StayApp", root_path, class: "site-brand" %>
+
+      <nav class="site-nav">
+        <% if user_signed_in? %>
+          <details class="user-menu">
+            <summary class="user-menu__summary">
+              <%= user_icon_tag(current_user, width: 32, height: 32, class: "user-menu__avatar") %>
+              <span class="user-menu__name"><%= current_user.name %></span>
+            </summary>
+
+            <div class="user-menu__panel">
+              <div class="user-menu__item"><%= link_to "マイページ", mypage_path %></div>
+              <div class="user-menu__item"><%= link_to "自分の施設", mine_rooms_path %></div>
+              <div class="user-menu__item"><%= link_to "予約一覧", reservations_path %></div>
+              <div class="user-menu__item"><%= link_to "プロフィール編集", edit_profile_path %></div>
+              <div class="user-menu__item"><%= link_to "アカウント情報", account_path %></div>
+
+              <div class="user-menu__divider"></div>
+
+              <div class="user-menu__item">
+                <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete } %>
+              </div>
+            </div>
+          </details>
+        <% else %>
+          <%= link_to "ログイン", new_user_session_path, class: "btn" %>
+          <%= link_to "新規登録", new_user_registration_path, class: "btn btn-primary" %>
+        <% end %>
+      </nav>
+    </header>
+
+    <% if notice.present? %>
+      <div class="flash flash-notice"><%= notice %></div>
+    <% end %>
+
+    <% if alert.present? %>
+      <div class="flash flash-alert"><%= alert %></div>
+    <% end %>
+
+    <main class="site-main">
+      <%= yield %>
+    </main>
+
+    <footer class="site-footer">
+      <div>StayApp</div>
+      <div>© <%= Time.current.year %> StayApp</div>
+    </footer>
   </body>
 </html>

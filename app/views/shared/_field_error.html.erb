@@ -1,0 +1,5 @@
+<% if object&.errors&.include?(field) %>
+  <div class="field-error">
+    <%= object.errors.full_messages_for(field).join(", ") %>
+  </div>
+<% end %>

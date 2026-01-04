@@ -1,0 +1,75 @@
+<div class="hero">
+  <div class="hero__bg">
+    <div class="hero__panel">
+      <h1 class="hero__title">泊まりたい場所、すぐ見つかる</h1>
+      <p class="hero__lead">施設名・住所・特徴から、あなたに合った宿泊先を検索できます</p>
+
+      <%= form_with url: rooms_path, method: :get, local: true, class: "search" do |f| %>
+        <div class="search__row">
+          <%= f.search_field :q,
+                value: params[:q],
+                placeholder: "例: 駅近 / 渋谷 / 駐車場あり",
+                class: "input input--lg" %>
+
+          <%= f.submit "検索", class: "btn btn--lg" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">StayAppでできること</h2>
+
+    <div class="stack">
+      <div class="text-muted">施設名・住所・特徴をまとめて検索</div>
+      <div class="text-muted">気になる施設をそのまま予約</div>
+      <div class="text-muted">自分の施設登録・管理も可能</div>
+    </div>
+
+    <div class="mt-24">
+      <%= link_to "施設一覧を見る", rooms_path, class: "btn btn-outline" %>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">おすすめエリア</h2>
+
+    <div class="grid grid-area">
+      <%= link_to rooms_path(area: "東京"), class: "area-card" do %>
+        <div class="area-card__img area-card__img_tokyo"></div>
+        <div class="area-card__body">
+          <div class="area-card__title">東京</div>
+          <div class="area-card__sub">都心・観光・出張に</div>
+        </div>
+      <% end %>
+
+      <%= link_to rooms_path(area: "大阪"), class: "area-card" do %>
+        <div class="area-card__img area-card__img_osaka"></div>
+        <div class="area-card__body">
+          <div class="area-card__title">大阪</div>
+          <div class="area-card__sub">グルメ・観光に</div>
+        </div>
+      <% end %>
+
+      <%= link_to rooms_path(area: "京都"), class: "area-card" do %>
+        <div class="area-card__img area-card__img_kyoto"></div>
+        <div class="area-card__body">
+          <div class="area-card__title">京都</div>
+          <div class="area-card__sub">歴史と街歩き</div>
+        </div>
+      <% end %>
+
+      <%= link_to rooms_path(area: "札幌"), class: "area-card" do %>
+        <div class="area-card__img area-card__img_sapporo"></div>
+        <div class="area-card__body">
+          <div class="area-card__title">札幌</div>
+          <div class="area-card__sub">自然とグルメ</div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

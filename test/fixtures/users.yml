@@ -1,0 +1,14 @@
+owner:
+  name: オーナー太郎
+  email: owner@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>
+
+other_owner:
+  name: 別オーナー花子
+  email: other_owner@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>
+
+guest:
+  name: ゲスト次郎
+  email: guest@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>

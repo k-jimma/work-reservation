@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "= 7.2.2.1"
+gem "minitest", "~> 5.25"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 # Use sqlite3 as the database for Active Record
@@ -55,3 +56,11 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "devise", "~> 4.9"
+gem "devise-i18n", "~> 1.10"
+gem "rails-i18n", "~> 7.0"
+
+gem "sassc-rails"
+
+gem "image_processing", "~> 1.2"

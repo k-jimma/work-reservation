@@ -1,0 +1,53 @@
+<h1 class="page-title">予約詳細</h1>
+
+<div class="card reservation-detail">
+  <div class="card-body reservation-detail__body">
+    <div class="reservation-detail__media">
+      <%= room_image_tag(@reservation.room, class: "img-thumb img-thumb--lg") %>
+    </div>
+
+    <div class="reservation-detail__content">
+      <h2 class="reservation-detail__title">
+        <%= @reservation.room.title %>
+      </h2>
+
+      <div class="detail-list">
+        <div class="detail-list__row">
+          <div class="detail-list__label">チェックイン</div>
+          <div class="detail-list__value"><%= @reservation.check_in_on.to_fs(:ymd) %></div>
+        </div>
+
+        <div class="detail-list__row">
+          <div class="detail-list__label">チェックアウト</div>
+          <div class="detail-list__value"><%= @reservation.check_out_on.to_fs(:ymd) %></div>
+        </div>
+
+        <div class="detail-list__row">
+          <div class="detail-list__label">宿泊日数</div>
+          <div class="detail-list__value"><%= @reservation.nights %> 泊</div>
+        </div>
+
+        <div class="detail-list__row">
+          <div class="detail-list__label">人数</div>
+          <div class="detail-list__value"><%= @reservation.guests_count %> 人</div>
+        </div>
+
+        <div class="detail-list__row">
+          <div class="detail-list__label">合計金額</div>
+          <div class="detail-list__value fw-bold"><%= yen(@reservation.total_amount) %></div>
+        </div>
+      </div>
+
+      <div class="reservation-detail__actions">
+        <%= link_to "施設の詳細を見る", room_path(@reservation.room), class: "btn btn-outline" %>
+        <%= link_to "予約一覧に戻る", reservations_path, class: "btn" %>
+
+        <%= button_to "予約をキャンセルする",
+              reservation_path(@reservation),
+              method: :delete,
+              data: { turbo_confirm: "この予約をキャンセルしますか？" },
+              class: "btn btn-danger" %>
+      </div>
+    </div>
+  </div>
+</div>

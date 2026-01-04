@@ -1,0 +1,132 @@
+<h1 class="page-title">マイページ</h1>
+
+<div class="profile">
+  <%= user_icon_tag(current_user, width: 100, height: 100, class: "avatar" ) %>
+
+  <div class="profile__meta">
+    <div class="profile__name">
+      <%= current_user.try(:name).presence || current_user.email %>
+    </div>
+    <div class="profile__sub text-muted text-small">
+      StayApp の管理画面
+    </div>
+  </div>
+</div>
+
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-label">登録施設</div>
+    <div class="kpi-value"><%= @rooms_count %></div>
+  </div>
+
+  <div class="kpi-card">
+    <div class="kpi-label">予約（確定）</div>
+    <div class="kpi-value"><%= @reservations_count %></div>
+  </div>
+</div>
+
+<section class="section">
+  <h2 class="section-title">クイックアクション</h2>
+
+  <div class="quick-actions">
+    <%= link_to "施設を探す", rooms_path, class: "btn" %>
+    <%= link_to "予約一覧", reservations_path, class: "btn" %>
+    <%= link_to "自分の施設", mine_rooms_path, class: "btn" %>
+    <%= link_to "施設を登録", new_room_path, class: "btn" %>
+    <%= link_to "プロフィール編集", edit_profile_path, class: "btn" %>
+    <%= link_to "アカウント情報", account_path, class: "btn" %>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">最近の施設</h2>
+    <% if @has_more_rooms %>
+      <div class="section-actions">
+        <%= link_to "もっと見る", mine_rooms_path %>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @recent_rooms.any? %>
+    <div class="grid grid-cards">
+      <% @recent_rooms.each do |room| %>
+        <div class="card">
+          <%= room_image_tag(room, class: "img-cover-md") %>
+
+          <div class="card-body">
+            <div class="card-title">
+              <%= link_to room.title, room_path(room) %>
+            </div>
+
+            <div class="card-sub"><%= room.address %></div>
+
+            <div class="card-row">
+              <div class="fw-bold">
+                <%= yen(room.price_per_night) %>
+                <span class="text-muted">/ 泊</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="empty">
+      <div class="empty-title">まだ施設がありません。</div>
+      <div class="empty-text">
+        まずは施設を登録してみましょう。
+      </div>
+      <div class="empty-actions">
+        <%= link_to "施設を登録する", new_room_path, class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+</section>
+
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">最近の予約</h2>
+    <% if @has_more_reservations %>
+      <div class="section-actions">
+        <%= link_to "もっと見る", reservations_path %>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @recent_reservations.any? %>
+    <div class="grid grid-cards">
+      <% @recent_reservations.each do |reservation| %>
+        <div class="card">
+          <%= room_image_tag(reservation.room, class: "img-cover-md") %>
+
+          <div class="card-body">
+            <div class="card-title">
+              <%= link_to reservation.room.title, reservation_path(reservation) %>
+            </div>
+
+            <div class="card-desc">
+              <div>チェックイン: <%= reservation.check_in_on.to_fs(:ymd) %></div>
+              <div>チェックアウト: <%= reservation.check_out_on.to_fs(:ymd) %></div>
+              <div>人数: <%= reservation.guests_count %> 人</div>
+            </div>
+
+            <div class="card-row">
+              <div class="fw-bold"><%= yen(reservation.total_amount) %></div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="empty">
+      <div class="empty-title">まだ予約がありません。</div>
+      <div class="empty-text">
+        気になる施設を探して予約してみましょう。
+      </div>
+      <div class="empty-actions">
+        <%= link_to "施設を探す", rooms_path, class: "btn" %>
+      </div>
+    </div>
+  <% end %>
+</section>

@@ -1,0 +1,95 @@
+<h1 class="page-title">予約一覧</h1>
+
+<% if @reservations.any? %>
+  <div class="stack">
+    <% @reservations.each do |reservation| %>
+      <div class="card reservation-card">
+        <div class="card-body reservation-card__body">
+          <div class="reservation-card__media">
+            <%= room_image_tag(reservation.room, class: "img-thumb") %>
+          </div>
+
+          <div class="reservation-card__content">
+            <div class="card-title">
+              <%= reservation.room.title %>
+            </div>
+
+            <div class="card-desc">
+              <%= truncate(reservation.room.description, length: 100) %>
+            </div>
+
+            <div class="card-desc">
+              <div>チェックイン: <%= reservation.check_in_on.to_fs(:ymd) %></div>
+              <div>チェックアウト: <%= reservation.check_out_on.to_fs(:ymd) %></div>
+              <div>人数: <%= reservation.guests_count %> 人</div>
+            </div>
+
+            <div class="reservation-card__meta">
+              <div class="fw-bold">合計金額: <%= yen(reservation.total_amount) %></div>
+              <div class="text-muted text-small">予約確定: <%= reservation.confirmed_at.to_fs(:ymd_hm) %></div>
+            </div>
+
+            <div class="reservation-card__actions">
+              <%= link_to "詳細を見る", reservation_path(reservation), class: "btn btn-outline btn-sm" %>
+
+              <div data-controller="confirm-modal" class="confirm">
+                <button type="button" data-action="confirm-modal#open" class="btn btn-outline btn-sm">
+                  予約をキャンセルする
+                </button>
+
+                <dialog data-confirm-modal-target="dialog" class="modal">
+                  <h3 class="modal-title">この予約をキャンセルしますか？</h3>
+
+                  <div class="modal-body">
+                    <div class="modal-media">
+                      <%= room_image_tag(reservation.room, class: "img-thumb img-thumb--sm") %>
+                    </div>
+
+                    <div class="modal-content">
+                      <div class="fw-bold"><%= reservation.room.title %></div>
+                      <div class="text-muted text-small"><%= yen(reservation.total_amount) %></div>
+
+                      <div class="modal-meta">
+                        <div>チェックイン: <%= reservation.check_in_on.to_fs(:ymd) %></div>
+                        <div>チェックアウト: <%= reservation.check_out_on.to_fs(:ymd) %></div>
+                        <div>人数: <%= reservation.guests_count %> 人</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="modal-actions">
+                    <button type="button" data-action="confirm-modal#close" class="btn btn-sm">
+                      戻る
+                    </button>
+
+                    <%= button_to "キャンセルする",
+                          reservation_path(reservation),
+                          method: :delete,
+                          class: "btn btn-danger btn-sm",
+                          form: { data: { turbo_confirm: nil } },
+                          data: { turbo: true } %>
+                  </div>
+                </dialog>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="empty">
+    <div class="empty-title">予約はまだありません。</div>
+    <div class="empty-text">気になる施設を探して予約してみましょう。</div>
+    <div class="empty-actions">
+      <%= link_to "施設を探す", rooms_path, class: "btn" %>
+    </div>
+  </div>
+<% end %>
+
+<div class="section">
+  <div class="nav-actions">
+    <%= link_to "マイページへ戻る", mypage_path, class: "btn" %>
+    <%= link_to "施設一覧へ戻る", rooms_path, class: "btn" %>
+  </div>
+</div>

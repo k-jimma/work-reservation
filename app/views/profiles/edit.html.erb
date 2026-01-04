@@ -1,0 +1,41 @@
+<h1 class="page-title">プロフィール編集</h1>
+
+<%= form_with model: current_user,
+      url: profile_path,
+      method: :put,
+      local: true,
+      html: { multipart: true, class: "form form--card" } do |f| %>
+
+  <div class="form-row">
+    <%= f.label :name, "名前", class: "label" %>
+    <%= f.text_field :name, required: true, class: "input" %>
+
+    <% if current_user.errors[:name].present? %>
+      <div class="field-error">
+        <%= current_user.errors[:name].join(', ') %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="form-row">
+    <%= f.label :bio, "自己紹介", class: "label" %>
+    <%= f.text_area :bio, rows: 5, class: "textarea" %>
+  </div>
+
+  <div class="form-row">
+    <%= f.label :icon, "アイコン画像", class: "label" %>
+    <%= f.file_field :icon, accept: "image/*", class: "input input--file" %>
+
+    <% if current_user.icon.attached? %>
+      <div class="form-help">現在のアイコン</div>
+      <div class="icon-preview">
+        <%= image_tag(current_user.icon.variant(resize_to_limit: [80,80]), class: "icon-preview__img") rescue image_tag(current_user.icon, class: "icon-preview__img") %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit "更新する", class: "btn btn-primary" %>
+    <%= link_to "戻る", mypage_path, class: "btn" %>
+  </div>
+<% end %>

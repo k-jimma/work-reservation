@@ -1,0 +1,44 @@
+<h1 class="page-title">
+  <%= @room.title %>
+</h1>
+
+<div class="room-show">
+  <div class="reservation-detail__body">
+    <div class="reservation-detail__media">
+      <%= room_image_tag(@room, class: "img-thumb img-thumb--lg room-show__img") %>
+    </div>
+
+    <div class="reservation-detail__content">
+      <div class="detail-list">
+        <div class="detail-list__row">
+          <div class="detail-list__label">住所</div>
+          <div class="detail-list__value"><%= @room.address %></div>
+        </div>
+
+        <div class="detail-list__row">
+          <div class="detail-list__label">説明</div>
+          <div class="detail-list__value room-show__desc"><%= @room.description %></div>
+        </div>
+
+        <div class="detail-list__row">
+          <div class="detail-list__label">料金</div>
+          <div class="detail-list__value">
+            <span class="room-show__price"><%= yen(@room.price_per_night) %></span>
+            <span class="text-muted">/ 泊</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-show__actions">
+        <%= link_to "この施設を予約する",
+              new_room_reservation_path(@room),
+              class: "btn btn-primary" %>
+
+        <%= link_to "戻る",
+              (request.referer.presence || rooms_path),
+              class: "btn btn-outline" %>
+
+      </div>
+    </div>
+  </div>
+</div>

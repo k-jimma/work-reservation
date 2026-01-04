@@ -1,0 +1,15 @@
+one:
+  user: guest
+  room: one
+  check_in_on: <%= Date.current + 7 %>
+  check_out_on: <%= Date.current + 9 %>
+  guests_count: 2
+  confirmed_at: <%= Time.current %>
+
+two:
+  user: guest
+  room: two
+  check_in_on: <%= Date.current + 7 %>
+  check_out_on: <%= Date.current + 9 %>
+  guests_count: 1
+  confirmed_at: <%= Time.current %>
